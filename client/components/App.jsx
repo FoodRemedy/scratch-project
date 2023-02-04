@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+import FeatureContainer from '../containers/FeaturePageContainer';
 
-class App extends Component {}
+function App() {
+  return (
+    <FeatureContainer />
+  );
+}
 
 export default App;
