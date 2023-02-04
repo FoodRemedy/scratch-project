@@ -1,56 +1,57 @@
-const models = require('../models/illnessModels');
+const Illness = require('../models/illnessModels');
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const foodController = {};
 
-const accessPoint = 'https://api.edamam.com/api/nutrition-data';
+// const accessPoint = 'https://api.edamam.com/api/nutrition-data';
 
-const app_id = 'c3e5b6ff';
+// const app_id = 'c3e5b6ff';
 
-const app_key = 'b23cc3a2748cbdbbc9893ef62a4fffd0';
+// const app_key = 'b23cc3a2748cbdbbc9893ef62a4fffd0';
 
+const preciseURL =
+  'https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20';
+
+// gets
 foodController.getFoods = (req, res, next) => {
-  // req.body = illness
-  // determine
-
-  // returns
-  models.Illness.findById(req.body).then((data) => {
-    // illness:
-    // foods:
-    res.locals.foods = data.foods;
-
-    /// returns an array of food objects
-
-    return next();
-  });
+  // queries mongoDB for illness, saves related foods in res locals
+  try {
+    Illness.findOne({ illness: req.body }).then((data) => {
+      res.locals.foods = data.foods;
+      return next();
+    });
+  } catch (error) {
+    return next({
+      log: 'Express error handler caught in getFoods handler',
+      status: 500,
+      message: error.message,
+    });
+  }
 };
 
 foodController.getFacts = async (req, res, next) => {
-  // loop through res.locals.foods
-  // call API three times,
-  // api_id,
   res.locals.facts = [];
   try {
     for (let food of res.locals.foods) {
-      const ingr = '1 ounce ' + food;
-      const response = await fetch(accessPoint, {
-        headers: {
-          app_id: app_id,
-          api_key: app_key,
-          ingr: ingr,
-        },
-      });
+      const newURL = preciseURL + food;
+      const response = await fetch(newURL);
       const data = await response.json();
       res.locals.facts.push(data);
-        }
     }
-  } catch {
+    console.log('length', res.locals.facts.length);
+    return next();
+  } catch (error) {
+    console.log(error);
     // error
-    
+    return next({
+      log: 'Express error handler caught getFacts handler',
+      status: 500,
+      message: error,
+    });
   }
-
-  // returns array of objects from calling API
-
-  return next();
 };
 
 module.exports = foodController;
+
+// https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20banana
