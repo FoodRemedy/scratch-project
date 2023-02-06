@@ -16,6 +16,7 @@ const preciseURL =
 // gets
 foodController.getFoods = (req, res, next) => {
   // queries mongoDB for illness, saves related foods in res locals
+  console.log('hitting get foods');
   try {
     Illness.findOne({ ailment: req.body.ailment }).then((data) => {
       res.locals.foods = data.foods;
@@ -31,6 +32,7 @@ foodController.getFoods = (req, res, next) => {
 };
 
 foodController.getFacts = async (req, res, next) => {
+  console.log('hitting get facts');
   res.locals.facts = [];
   try {
     for (let food of res.locals.foods) {

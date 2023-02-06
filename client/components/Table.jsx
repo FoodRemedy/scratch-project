@@ -12,18 +12,31 @@ function Table(props) {
       </tr>
     </thead>
   );
-
+  // row is the particular food object
+    // add name
+    // iterate over nutrients
+  // add a cell for each nutrient
+  // wrap quantity+unit in a td tag
   const tableBody = rows.map((row) => (
     <tr>
-      {dataProperties.map((property) =>
-      // if (column === 'linkedinValue') {
-      //   return <td><a href={row[column]} target="_blank" rel="noreferrer">{row[column]}</a></td>;
-      // }
-      // if (column === 'lastConnectionValue' || column === 'nextConnectionValue') {
-      //   const date = new Date(row[column]);
-      //   return <td>{date.toDateString()}</td>;
-      // }
-        <td>{row[property]}</td>)}
+
+      {[<td>{row.name}</td>, ...row.nutrients.map((property) => {
+        console.log('property', property);
+        if (!property) {
+          return <td>N/A</td>;
+        }
+        return <td>{`${property.quantity ? property.quantity.toFixed(2) : 0} ${property.unit}`}</td>;
+      },
+
+        // if (column === 'linkedinValue') {
+        //   return <td><a href={row[column]} target="_blank" rel="noreferrer">{row[column]}</a></td>;
+        // }
+        // if (column === 'lastConnectionValue' || column === 'nextConnectionValue') {
+        //   const date = new Date(row[column]);
+        //   return <td>{date.toDateString()}</td>;
+        // }
+      ),
+      ]}
     </tr>
   ));
 
