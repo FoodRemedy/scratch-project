@@ -1,19 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login(props) {
+  const { globalUser, setGlobalUser } = props;
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    console.log('username before click', username)
+    if (event.target.id === 'username') setUsername(event.target.value);
+    if (event.target.id === 'password') setPassword(event.target.value);
+  };
+
+  const handleSignup = () => {
+    fetch('http://localhost:3000/signup', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('user created:', data);
+        setUsername('');
+        setPassword('');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleLogin = () => {
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+      .then((res) => {
+        if (!res.ok) {
+          setUsername('');
+          console.log('username after click', username)
+          setPassword('');
+          console.log(res);
+          throw new Error(`Error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log('username', data);
+        setGlobalUser(data);
+        navigate('/feature');
+      })
+      .catch((err) => console.log('login error:', err));
+  };
+
   return (
     <div className="loginContainer">
       <label htmlFor="username">
         <b>Username</b>
-        <input type="text" placeholder="Enter Username" name="username" required />
+        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
       </label>
 
       <label htmlFor="password">
         <b>Password</b>
-        <input type="text" placeholder="Enter Password" name="password" required />
+        <input id="password" type="text" onChange={handleChange} placeholder="Enter Password" name="password" required />
       </label>
 
-      <button type="submit">Login</button>
+      <button type="submit" onClick={handleSignup}>Sign Up</button>
+      <button type="submit" onClick={handleLogin}>
+        Login
+        {/* { <Link to={
+          // if globalUser === '', link to the current page
+          // otherwise, link to /feature
+          globalUser ? {
+            pathname: '/feature',
+          } : {
+            pathname: '/',
+          }
+          }
+        >
+          Login
+        </Link> } */}
+      </button>
 
     </div>
   );
