@@ -59,6 +59,9 @@ function Login(props) {
   }
 
   return (
+    <div className="loginContents">
+      <h1>Title</h1>
+    
     <form onSubmit={handleSubmit} className="loginContainer">
       <label htmlFor="username">
         <b>Username</b>
@@ -100,6 +103,7 @@ function Login(props) {
       </button>
 
     </form>
+    </div>
   );
 }
 export default Login;
