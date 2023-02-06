@@ -3,7 +3,6 @@ import Table from '../components/Table';
 import DropDown from '../components/DropDown';
 
 function FeatureContainer() {
-  
   // const tableProperties = ['Insert', 'food', 'properties'];
   const [ailment, setAilment] = React.useState('headache');
 
@@ -17,9 +16,10 @@ function FeatureContainer() {
   };
 
   const handleClick = () => {
+    console.log('ailment', ailment);
     fetch('http://localhost:3000/search', {
       method: 'POST',
-      body: JSON.stringify(ailment),
+      body: JSON.stringify({ ailment }),
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
