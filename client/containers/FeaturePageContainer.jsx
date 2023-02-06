@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import DropDown from '../components/DropDown';
 
-function FeatureContainer() {
+function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
   const [ailment, setAilment] = React.useState('headache');
+  const navigate = useNavigate();
 
   const tableProperties = [
     'CA',
@@ -38,6 +40,11 @@ function FeatureContainer() {
     setAilment(event.target.value);
   };
 
+  const handleLogout = () => {
+    props.setGlobalUser('');
+    navigate('/');
+  }
+
   const handleClick = () => {
     console.log('ailment', ailment);
     fetch('http://localhost:3000/search', {
@@ -70,8 +77,10 @@ function FeatureContainer() {
       <nav>
         <h1>Food Remedy</h1>
         <div className="logoutContainer">
-          <p>username</p>
-          <button className="logout">Logout</button>
+          <p>{props.globalUser}</p>
+          <button 
+            onClick={handleLogout}
+            className="logout">Logout</button>
         </div>
       </nav>
 

@@ -59,10 +59,11 @@ function Login(props) {
   }
 
   return (
-    <div className="loginContents">
-      <h1>Title</h1>
+    <div className="loginWrapper">
+     
     
     <form onSubmit={handleSubmit} className="loginContainer">
+      <h1>Food Remedy</h1>
       <label htmlFor="username">
         <b>Username</b>
         <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
