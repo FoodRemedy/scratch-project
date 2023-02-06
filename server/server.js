@@ -53,6 +53,20 @@ app.post('/login', userController.verifyUser, (req, res) => {
   res.status(200).json(res.locals.username);
 });
 
+//save favorite food to user's favorite folder
+app.patch('/user/addfav/:username',userController.addFavorite,(req, res)=> {
+  res.status(200).json(res.locals.favorite);
+})
+//get a collection of favorite food for a user
+app.get('/user/:username',userController.getFavorite,(req,res)=>{
+  res.status(200).json(res.locals.favorite);
+})
+
+//delete a favorite food from a user's favorite collection
+app.patch('/user/deletefav/:username',userController.deleteFavorite,(req, res)=> {
+  res.status(200).json(res.locals.favorite);
+})
+
 // global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {

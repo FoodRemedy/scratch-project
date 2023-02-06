@@ -17,7 +17,7 @@ const preciseURL =
 foodController.getFoods = (req, res, next) => {
   // queries mongoDB for illness, saves related foods in res locals
   try {
-    Illness.findOne({ illness: req.body }).then((data) => {
+    Illness.findOne({ ailment: req.body.ailment }).then((data) => {
       res.locals.foods = data.foods;
       return next();
     });
