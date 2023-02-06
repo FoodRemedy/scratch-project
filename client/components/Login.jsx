@@ -26,8 +26,6 @@ function Login(props) {
       .then((res) => res.json())
       .then((data) => {
         console.log('user created:', data);
-        setUsername('');
-        setPassword('');
       })
       .catch((err) => console.log(err));
   };
@@ -43,10 +41,6 @@ function Login(props) {
     })
       .then((res) => {
         if (!res.ok) {
-          setUsername('');
-          console.log('username after click', username);
-          setPassword('');
-          console.log(res);
           throw new Error(`Error! status: ${res.status}`);
         }
         return res.json();
@@ -59,21 +53,17 @@ function Login(props) {
       .catch((err) => console.log('login error:', err));
   };
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    e.target.reset();
+  }
+
   return (
-    <div className="loginWrapper">
-      <div className="loginContainer">
-        <h3>Food Remedy</h3>
-        <label htmlFor="username">
-          <b>Username</b>
-          <input
-            id="username"
-            type="text"
-            onChange={handleChange}
-            placeholder="Enter Username"
-            name="username"
-            required
-          />
-        </label>
+    <form onSubmit={handleSubmit} className="loginContainer">
+      <label htmlFor="username">
+        <b>Username</b>
+        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
+      </label>
 
         <label htmlFor="password">
           <b>Password</b>
@@ -87,12 +77,15 @@ function Login(props) {
           />
         </label>
 
-        <button type="submit" onClick={handleSignup}>
-          Sign Up
-        </button>
-        <button type="submit" onClick={handleLogin}>
-          Login
-          {/* { <Link to={
+      <button
+        type="submit"
+        onClick={handleSignup}
+      >
+        Sign Up
+      </button>
+      <button type="submit" onClick={handleLogin}>
+        Login
+        {/* { <Link to={
           // if globalUser === '', link to the current page
           // otherwise, link to /feature
           globalUser ? {
@@ -104,9 +97,9 @@ function Login(props) {
         >
           Login
         </Link> } */}
-        </button>
-      </div>
-    </div>
+      </button>
+
+    </form>
   );
 }
 export default Login;
