@@ -39,7 +39,6 @@ function Login(props) {
       }),
       headers: { 'Content-Type': 'application/json' },
     })
-
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error! status: ${res.status}`);
@@ -66,10 +65,17 @@ function Login(props) {
         <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
       </label>
 
-      <label htmlFor="password">
-        <b>Password</b>
-        <input id="password" type="text" onChange={handleChange} placeholder="Enter Password" name="password" required />
-      </label>
+        <label htmlFor="password">
+          <b>Password</b>
+          <input
+            id="password"
+            type="text"
+            onChange={handleChange}
+            placeholder="Enter Password"
+            name="password"
+            required
+          />
+        </label>
 
       <button
         type="submit"
