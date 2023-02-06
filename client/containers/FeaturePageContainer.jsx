@@ -6,8 +6,31 @@ function FeatureContainer() {
   // const tableProperties = ['Insert', 'food', 'properties'];
   const [ailment, setAilment] = React.useState('headache');
 
-  const tableProperties = ['CA', 'K', 'FE', 'ZN', 'VITA_RAE', 'VITC', 'VITB12', 'VITD', 'TOCPHA', 'NIA'];
-  const tableHeaders = ['Name', 'Calcium', 'Potassium', 'Iron', 'Zinc', 'Vitamin A', 'Vitamin C', 'Vitamin B-12', 'Vitamin D', 'Vitamin E', 'Niacin'];
+  const tableProperties = [
+    'CA',
+    'K',
+    'FE',
+    'ZN',
+    'VITA_RAE',
+    'VITC',
+    'VITB12',
+    'VITD',
+    'TOCPHA',
+    'NIA',
+  ];
+  const tableHeaders = [
+    'Name',
+    'Calcium',
+    'Potassium',
+    'Iron',
+    'Zinc',
+    'Vitamin A',
+    'Vitamin C',
+    'Vitamin B-12',
+    'Vitamin D',
+    'Vitamin E',
+    'Niacin',
+  ];
 
   const [foodEntries, setFoodEntries] = useState([]);
 
@@ -44,9 +67,24 @@ function FeatureContainer() {
 
   return (
     <>
-      <h1>Placeholder</h1>
-      <DropDown handleChange={handleChange} handleClick={handleClick} ailment={ailment} />
-      <Table columns={tableHeaders} rows={foodEntries} dataProperties={tableProperties} />
+      <nav>
+        <h1>Food Remedy</h1>
+        <div className="logoutContainer">
+          <p>username</p>
+          <button className="logout">Logout</button>
+        </div>
+      </nav>
+
+      <DropDown
+        handleChange={handleChange}
+        handleClick={handleClick}
+        ailment={ailment}
+      />
+      <Table
+        columns={tableHeaders}
+        rows={foodEntries}
+        dataProperties={tableProperties}
+      />
     </>
   );
 }

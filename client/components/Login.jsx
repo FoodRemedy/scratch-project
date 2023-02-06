@@ -9,7 +9,7 @@ function Login(props) {
   const navigate = useNavigate();
 
   const handleChange = (event) => {
-    console.log('username before click', username)
+    console.log('username before click', username);
     if (event.target.id === 'username') setUsername(event.target.value);
     if (event.target.id === 'password') setPassword(event.target.value);
   };
@@ -41,11 +41,10 @@ function Login(props) {
       }),
       headers: { 'Content-Type': 'application/json' },
     })
-
       .then((res) => {
         if (!res.ok) {
           setUsername('');
-          console.log('username after click', username)
+          console.log('username after click', username);
           setPassword('');
           console.log(res);
           throw new Error(`Error! status: ${res.status}`);
@@ -61,21 +60,39 @@ function Login(props) {
   };
 
   return (
-    <div className="loginContainer">
-      <label htmlFor="username">
-        <b>Username</b>
-        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
-      </label>
+    <div className="loginWrapper">
+      <div className="loginContainer">
+        <h3>Food Remedy</h3>
+        <label htmlFor="username">
+          <b>Username</b>
+          <input
+            id="username"
+            type="text"
+            onChange={handleChange}
+            placeholder="Enter Username"
+            name="username"
+            required
+          />
+        </label>
 
-      <label htmlFor="password">
-        <b>Password</b>
-        <input id="password" type="text" onChange={handleChange} placeholder="Enter Password" name="password" required />
-      </label>
+        <label htmlFor="password">
+          <b>Password</b>
+          <input
+            id="password"
+            type="text"
+            onChange={handleChange}
+            placeholder="Enter Password"
+            name="password"
+            required
+          />
+        </label>
 
-      <button type="submit" onClick={handleSignup}>Sign Up</button>
-      <button type="submit" onClick={handleLogin}>
-        Login
-        {/* { <Link to={
+        <button type="submit" onClick={handleSignup}>
+          Sign Up
+        </button>
+        <button type="submit" onClick={handleLogin}>
+          Login
+          {/* { <Link to={
           // if globalUser === '', link to the current page
           // otherwise, link to /feature
           globalUser ? {
@@ -87,8 +104,8 @@ function Login(props) {
         >
           Login
         </Link> } */}
-      </button>
-
+        </button>
+      </div>
     </div>
   );
 }
