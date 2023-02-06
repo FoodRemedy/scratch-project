@@ -9,7 +9,7 @@ function Login(props) {
   const navigate = useNavigate();
 
   const handleChange = (event) => {
-    console.log('username before click', username)
+    console.log('username before click', username);
     if (event.target.id === 'username') setUsername(event.target.value);
     if (event.target.id === 'password') setPassword(event.target.value);
   };
@@ -26,8 +26,6 @@ function Login(props) {
       .then((res) => res.json())
       .then((data) => {
         console.log('user created:', data);
-        setUsername('');
-        setPassword('');
       })
       .catch((err) => console.log(err));
   };
@@ -44,10 +42,6 @@ function Login(props) {
 
       .then((res) => {
         if (!res.ok) {
-          setUsername('');
-          console.log('username after click', username)
-          setPassword('');
-          console.log(res);
           throw new Error(`Error! status: ${res.status}`);
         }
         return res.json();
@@ -60,8 +54,13 @@ function Login(props) {
       .catch((err) => console.log('login error:', err));
   };
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    e.target.reset();
+  }
+
   return (
-    <div className="loginContainer">
+    <form onSubmit={handleSubmit} className="loginContainer">
       <label htmlFor="username">
         <b>Username</b>
         <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
@@ -72,7 +71,12 @@ function Login(props) {
         <input id="password" type="text" onChange={handleChange} placeholder="Enter Password" name="password" required />
       </label>
 
-      <button type="submit" onClick={handleSignup}>Sign Up</button>
+      <button
+        type="submit"
+        onClick={handleSignup}
+      >
+        Sign Up
+      </button>
       <button type="submit" onClick={handleLogin}>
         Login
         {/* { <Link to={
@@ -89,7 +93,7 @@ function Login(props) {
         </Link> } */}
       </button>
 
-    </div>
+    </form>
   );
 }
 export default Login;
