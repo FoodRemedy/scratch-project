@@ -1,0 +1,84 @@
+@import '_variables';
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Sen&display=swap');
+
+
+// Colors
+
+$primaryBlack: #050505;
+$secondaryBlack: #5d5d5d;
+
+$primaryLime: #00ff00;
+$secondaryLime: #acffac;
+$lightestLime:#e2ffe2;
+
+$primarySalmon: salmon;
+$secondarySalmon: rgb(252, 192, 185);
+
+
+
+
+// Global
+body {
+  height: 100vh;
+  margin: 0px;
+  font-family: 'Sen', sans-serif;
+}
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $lightestLime;
+  height: 100vh;
+}
+
+button {
+  background-color: $primarySalmon;
+  border: 1px solid white;
+  height: 30px;
+}
+
+#button :hover {
+    cursor: help;
+}
+
+// 1b. Login page
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $secondarySalmon;
+  border-radius: 5%;
+  width: 300px;
+  box-shadow: 8px 10px 14px 0px rgb(128, 128, 128, 0.1);
+  background-color: white;
+  margin-top: 100px;
+}
+
+.loginContainer input {
+  margin-left: 10px;
+  margin-bottom: 20px;
+  border-radius: 5%;
+}
+
+.loginContainer button {
+  width: 200px;
+  margin-bottom: 20px;
+  border-radius: 5%;
+}
+
+// 1a. Signup page
+
+// 2. Feature Page
+.feature-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
