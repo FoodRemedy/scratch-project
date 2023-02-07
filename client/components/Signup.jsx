@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Login(props) {
+function Signup(props) {
   const { globalUser, setGlobalUser } = props;
 
   const [username, setUsername] = useState('');
@@ -26,11 +26,11 @@ function Login(props) {
       .then((res) => res.json())
       .then((data) => {
         console.log('user created:', data);
-        navigate('/signup')
+        navigate('/feature');
       })
       .catch((err) => console.log(err));
   };
-
+  // navigate('/feature');
   const handleLogin = () => {
     fetch('http://localhost:3000/login', {
       method: 'POST',
@@ -60,15 +60,14 @@ function Login(props) {
   }
 
   return (
-    <div className="loginWrapper">
-     
-    
-    <form onSubmit={handleSubmit} className="loginContainer">
-      <h1>AlcheMeal</h1>
-      <label htmlFor="username">
-        <b>Username</b>
-        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
-      </label>
+    <div className="signupWrapper">
+
+      <form onSubmit={handleSubmit} className="signupContainer">
+        <h1>Sign Up</h1>
+        <label htmlFor="username">
+          <b>Username</b>
+          <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
+        </label>
 
         <label htmlFor="password">
           <b>Password</b>
@@ -82,30 +81,18 @@ function Login(props) {
           />
         </label>
 
-      <button type="submit" onClick={handleLogin}>
-        Login
-        {/* { <Link to={
-          // if globalUser === '', link to the current page
-          // otherwise, link to /feature
-          globalUser ? {
-            pathname: '/feature',
-          } : {
-            pathname: '/',
-          }
-        }
+        <button
+          type="submit"
+          onClick={handleSignup}
         >
-        Login
-      </Link> } */}
-      </button>
-      <button
-        type="submit"
-        onClick={handleSignup}
-      >
-        Sign Up
-      </button>
+          Create User
+        </button>
+        <button type="submit" onClick={handleLogin}>
+          Login
+        </button>
 
-    </form>
+      </form>
     </div>
   );
 }
-export default Login;
+export default Signup;

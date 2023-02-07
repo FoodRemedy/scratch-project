@@ -75,7 +75,7 @@ function FeatureContainer(props) {
   return (
     <>
       <nav>
-        <h1>Food Remedy</h1>
+        <h1>AlcheMeal</h1>
         <div className="logoutContainer">
           <p>{props.globalUser}</p>
           <button 

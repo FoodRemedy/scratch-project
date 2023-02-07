@@ -28,6 +28,14 @@ body {
   background-color: $lightestLime;
   height: 100vh;
 }
+.signupWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $lightestLime;
+  height: 100vh;
+}
 
 button {
   background-color: $primarySalmon;
@@ -78,6 +86,48 @@ button {
   margin-bottom: 20px;
   border-radius: 5%;
 }
+
+
+// 1b. Signup page
+
+
+.signupContents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1{
+    margin-top: 200px;
+  }
+}
+
+
+.signupContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $secondarySalmon;
+  border-radius: 5%;
+  width: 300px;
+  box-shadow: 8px 10px 14px 0px rgb(128, 128, 128, 0.1);
+  background-color: white;
+  margin-top: 50px;
+}
+
+.signupContainer input {
+  margin-left: 10px;
+  margin-bottom: 20px;
+  border-radius: 5%;
+}
+
+.signupContainer button {
+  width: 200px;
+  margin-bottom: 20px;
+  border-radius: 5%;
+}
+
 
 // 2. Feature Page
 .feature-container {
@@ -142,6 +192,7 @@ nav {
   margin-bottom: 10px;
 }
 
+//table 
 table {
   margin: 5px;
   margin-top: 50px;
