@@ -1,6 +1,6 @@
 const Illness = require('../models/illnessModels');
-const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const foodController = {};
 
@@ -10,8 +10,7 @@ const foodController = {};
 
 // const app_key = 'b23cc3a2748cbdbbc9893ef62a4fffd0';
 
-const preciseURL =
-  'https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20';
+const preciseURL = 'https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20';
 
 // gets
 foodController.getFoods = (req, res, next) => {
@@ -35,7 +34,7 @@ foodController.getFacts = async (req, res, next) => {
   console.log('hitting get facts');
   res.locals.facts = [];
   try {
-    for (let food of res.locals.foods) {
+    for (const food of res.locals.foods) {
       const newURL = preciseURL + food;
       const response = await fetch(newURL);
       const data = await response.json();

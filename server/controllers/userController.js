@@ -3,16 +3,16 @@ const bcrypt = require('bcrypt');
 const userController = {};
 
 userController.createUser = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, allergy } = req.body;
 
   try {
-    //check first to see if user is already created
+    // check first to see if user is already created
     const found = await User.findOne({ username });
     if (found) {
       console.log('yes user is created');
       throw new Error('username is already in use');
     }
-    const newUser = await new User({ username, password });
+    const newUser = await new User({ username, password, allergy });
     await newUser.save();
     res.locals.user = newUser;
     return next();

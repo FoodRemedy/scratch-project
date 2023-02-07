@@ -12,7 +12,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  allergy: {
+    type: Array,
+    default: [],
+  },
+  diet: {
+    type: Array,
+    default: [],
+  },
   favorite: {
+    type: Array,
+    default: [],
+  },
+  blacklist: {
     type: Array,
     default: [],
   },

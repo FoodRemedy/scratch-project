@@ -1,3 +1,6 @@
+// my db // const mongoURI = 'mongodb+srv://chanduh:alchemeal@solocluster.kybmlap.mongodb.net/?retryWrites=true&w=majority';
+// original db // const mongoURI = 'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
+
 const path = require('path');
 
 const mongoose = require('mongoose');
@@ -14,12 +17,12 @@ const foodController = require('./controllers/foodController');
 
 const userController = require('./controllers/userController');
 
-//connect to database
-const mongoURI =
-  'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
+// connect to database
+const mongoURI = 'mongodb+srv://chanduh:alchemeal@solocluster.kybmlap.mongodb.net/?retryWrites=true&w=majority';
 mongoose
   .connect(mongoURI, {
     // options for the connect method to parse the URI
+    dbName: 'alchemeal',
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -37,10 +40,10 @@ app.post(
   '/search',
   foodController.getFoods,
   foodController.getFacts,
-  (req, res) => res.status(200).send(res.locals.facts)
+  (req, res) => res.status(200).send(res.locals.facts),
 );
 
-//route for signing up
+// route for signing up
 app.get('/signup', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/signup.html'));
 });
@@ -53,19 +56,19 @@ app.post('/login', userController.verifyUser, (req, res) => {
   res.status(200).json(res.locals.username);
 });
 
-//save favorite food to user's favorite folder
-app.patch('/user/addfav/:username',userController.addFavorite,(req, res)=> {
+// save favorite food to user's favorite folder
+app.patch('/user/addfav/:username', userController.addFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
-})
-//get a collection of favorite food for a user
-app.get('/user/:username',userController.getFavorite,(req,res)=>{
+});
+// get a collection of favorite food for a user
+app.get('/user/:username', userController.getFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
-})
+});
 
-//delete a favorite food from a user's favorite collection
-app.patch('/user/deletefav/:username',userController.deleteFavorite,(req, res)=> {
+// delete a favorite food from a user's favorite collection
+app.patch('/user/deletefav/:username', userController.deleteFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
-})
+});
 
 // global error handler
 app.use((err, req, res, next) => {
@@ -74,7 +77,7 @@ app.use((err, req, res, next) => {
     status: 500,
     message: { err: 'An error occurred' },
   };
-  const errorObj = Object.assign({}, defaultErr, err);
+  const errorObj = { ...defaultErr, ...err };
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
