@@ -1,14 +1,9 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './components/App.jsx';
 
-// import styles from './scss/application.scss';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import App from './components/App';
 
-const domNode = document.getElementById('app');
-const root = createRoot(domNode);
-root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
+import styles from './scss/application.scss';
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App />);
