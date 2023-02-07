@@ -1,85 +1,93 @@
-const path = require('path');
+// Module imports
+const path = require("path");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const express = require("express");
 
-const mongoose = require('mongoose');
+// Controller imports
+const foodController = require("./controllers/foodController");
+const userController = require("./controllers/userController");
 
-const express = require('express');
+// Database connection
+const mongoURI = "mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority";
 
-const app = express();
-
-const cors = require('cors');
-
-const PORT = 3000;
-
-const foodController = require('./controllers/foodController');
-
-const userController = require('./controllers/userController');
-
-//connect to database
-const mongoURI =
-  'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
 mongoose
   .connect(mongoURI, {
-    // options for the connect method to parse the URI
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('Connected to Mongo DB.'))
-  .catch((err) => console.log(err));
+  .then(() => console.log("Succesffuly connected to MongoDB"))
+  .catch((err) => console.log(`Failed to connect to MongoDB: ${err}`));
 
-// needed to fix fetching problem in react
+// Server initialization
+const app = express();
+const PORT = 3000;
+
+// Enable CORS for all origins & parse JSON payloads
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static(path.resolve(__dirname, '../client')));
+// Deliver static files
+app.use(express.static(path.resolve(__dirname, "../client")));
 
-// handles POST requests from illness dropdown
+// Route to fetch results for selected illness
 app.post(
-  '/search',
+  "/search",
   foodController.getFoods,
   foodController.getFacts,
-  (req, res) => res.status(200).send(res.locals.facts)
+  (req, res) => {
+    return res.status(200).send(res.locals.facts)
+  }
 );
 
-//route for signing up
-app.get('/signup', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/signup.html'));
+// Route to create user
+app.post("/signup", userController.createUser, (req, res) => {
+  return res.status(200).json(res.locals.user);
 });
 
-app.post('/signup', userController.createUser, (req, res) => {
-  res.status(200).json(res.locals.user);
+// Route to verify user
+app.post("/login", userController.verifyUser, (req, res) => {
+  return res.status(200).json(res.locals.username);
 });
 
-app.post('/login', userController.verifyUser, (req, res) => {
-  res.status(200).json(res.locals.username);
+// Route tave favorite food to user's favorite folder
+app.patch("/user/addfav/:username", userController.addFavorite, (req, res) => {
+  return res.status(200).json(res.locals.favorite);
 });
 
-//save favorite food to user's favorite folder
-app.patch('/user/addfav/:username',userController.addFavorite,(req, res)=> {
-  res.status(200).json(res.locals.favorite);
-})
-//get a collection of favorite food for a user
-app.get('/user/:username',userController.getFavorite,(req,res)=>{
-  res.status(200).json(res.locals.favorite);
-})
+// Route to get a collection of favorite food for a user
+app.get("/user/:username", userController.getFavorite, (req, res) => {
+  return res.status(200).json(res.locals.favorite);
+});
 
-//delete a favorite food from a user's favorite collection
-app.patch('/user/deletefav/:username',userController.deleteFavorite,(req, res)=> {
-  res.status(200).json(res.locals.favorite);
-})
+// Route to delete a favorite food from a user's favorite collection
+app.patch(
+  "/user/deletefav/:username",
+  userController.deleteFavorite,
+  (req, res) => {
+    return res.status(200).json(res.locals.favorite);
+  }
+);
 
-// global error handler
+// Catch all route
+app.use('/', (req, res) => {
+  return res.status(404).json({err: "Not found"})
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {
-    log: 'Express error handler caught unknown middleware error',
+    log: "Express error handler caught unknown middleware error",
     status: 500,
-    message: { err: 'An error occurred' },
+    message: { err: "An unknown error occurred" },
   };
+
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-// listens, confirms connection
+// Start server
 app.listen(PORT, () => {
   console.log(`Success! Your application is running on port ${PORT}.`);
 });
