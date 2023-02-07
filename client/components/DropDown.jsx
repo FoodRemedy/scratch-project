@@ -5,7 +5,8 @@ function DropDown(props) {
   const { ailment, handleChange, handleClick } = props;
 
   return (
-    <div>
+    <div className="dropdown-container">
+    <div className="dropdown">
       <label htmlFor="ailment">
         What is your ailment?
         <select name="ailments" id="ailments" value={ailment} onChange={handleChange}>
@@ -18,6 +19,7 @@ function DropDown(props) {
         </select>
         <button type="button" onClick={handleClick}>Submit</button>
       </label>
+    </div>
     </div>
   );
 }
