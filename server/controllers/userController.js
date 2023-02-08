@@ -106,10 +106,11 @@ userController.getProfile = async (req, res, next) => {
   const { username } = req.params;
       try {
         const profile = await User.findOne({ username });
-        if (!user) {
+        if (!profile) {
           throw Error('user not found');
         }
     res.locals.profile = profile;
+    console.log(profile)
     return next();
     } 
     catch (error) {

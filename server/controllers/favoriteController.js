@@ -8,12 +8,13 @@ const favoriteController = {};
     console.log('inside the add favorite');
     const { username } = req.params;
     const { favorite } = req.body;
+    console.log(username, favorite)
     try {
       const user = await User.findOne({ username: username });
+      console.log(user)
       if (!user) {
         throw Error('user not found');
       }
-      
       favorite.forEach((f) => {
         if (!user.favorite.includes(f)) {
           user.favorite.push(f);
