@@ -4,20 +4,25 @@ import React, { useState, useEffect } from 'react';
 function Card(props) {
   const { columns, rows, dataProperties } = props;
   const [foodData, setFoodData] = useState([]);
+ console.log("THIS IS IN THE CARD",  columns, rows, dataProperties)
+  
+console.log('testing rows', rows[0])
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch('../server/populateDb.js');
-      const foodData = await response.json();
-      setFoodData(foodData);
-    }
-    fetchData();
-  }, []);
+// const tableBody = rows.map((row) => (
+//       {[{row.name}, ...row.nutrients.map((property) => {
+//         console.log('property', property);
+//         if (!property) {
+//           return N/A
+//         }
+//         return {`${property.quantity ? property.quantity.toFixed(2) : 0} ${property.unit}`}
+//       },),]}
+//   ));
+
 
   return (
     <div className="card">
       <div className="name">
-        <h1> Food: </h1>
+        <h1> Food:  </h1>
       </div>
       <ul className="detailsList">
         <h2>Nutrition Facts</h2>
