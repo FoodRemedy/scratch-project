@@ -21,6 +21,7 @@ function Signup(props) {
         username,
         password,
       }),
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())

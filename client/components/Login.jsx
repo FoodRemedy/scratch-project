@@ -28,12 +28,6 @@ function Login(props) {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error! status: ${res.status}`);
-        }
-        res.json();
-      })
       .then((data) => {
         console.log('user created:', data);
         setSignUpError(false);
@@ -103,12 +97,6 @@ function Login(props) {
           />
         </label>
 
-      <button
-        type="submit"
-        onClick={handleSignup}
-      >
-        Sign Up
-      </button>
       <button type="submit" onClick={handleLogin}>
         Login
         {/* { <Link to={
@@ -119,10 +107,16 @@ function Login(props) {
           } : {
             pathname: '/',
           }
-          }
+        }
         >
-          Login
-        </Link> } */}
+        Login
+      </Link> } */}
+      </button>
+      <button
+        type="submit"
+        onClick={handleSignup}
+      >
+        Sign Up
       </button>
 
     </form>
