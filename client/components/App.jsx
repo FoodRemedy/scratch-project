@@ -5,12 +5,6 @@ import {
   Route,
   useNavigate,
 } from 'react-router-dom';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from 'react-router-dom';
 import FeatureContainer from '../containers/FeaturePageContainer';
 import Login from './Login';
 import Profile from './Profile';
