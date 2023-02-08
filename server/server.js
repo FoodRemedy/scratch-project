@@ -14,6 +14,7 @@ const cookieController = require("./controllers/cookieController");
 // Database connection
 const mongoURI = "mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority";
 
+mongoose.set({strictQuery: true});
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,
