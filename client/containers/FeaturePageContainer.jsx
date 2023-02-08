@@ -45,7 +45,7 @@ function FeatureContainer(props) {
   const handleLogout = () => {
     props.setGlobalUser('');
     navigate('/');
-  }
+  };
 
   const handleClick = () => {
     console.log('ailment', ailment);
@@ -74,15 +74,24 @@ function FeatureContainer(props) {
       .catch((err) => console.log(err));
   };
 
+  // Jackson added this function
+  const handleProfile = () => {
+    console.log(props.globalUser);
+    navigate(`/profile/${props.globalUser}`);
+  };
+
   return (
     <>
       <nav>
         <h1>AlcheMeal</h1>
-        <div className="logoutContainer">
+        <div className='logoutContainer'>
           <p>{props.globalUser}</p>
-          <button 
-            onClick={handleLogout}
-            className="logout">Logout</button>
+          <button onClick={handleProfile} className='logout'>
+            Edit Profile
+          </button>
+          <button onClick={handleLogout} className='logout'>
+            Logout
+          </button>
         </div>
       </nav>
 
