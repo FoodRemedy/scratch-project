@@ -25,6 +25,7 @@ function Login(props) {
         username,
         password,
       }),
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => {
@@ -52,6 +53,7 @@ function Login(props) {
         username,
         password,
       }),
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => {
