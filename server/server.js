@@ -1,5 +1,5 @@
-// my db // const mongoURI = 'mongodb+srv://chanduh:alchemeal@solocluster.kybmlap.mongodb.net/?retryWrites=true&w=majority';
-// original db // const mongoURI = 'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
+// alchemealdb : const mongoURI = 'mongodb+srv://chanduh:alchemeal@solocluster.kybmlap.mongodb.net/?retryWrites=true&w=majority';
+// original db : const mongoURI = 'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
 
 const path = require('path');
 
@@ -69,6 +69,11 @@ app.get('/user/:username', userController.getFavorite, (req, res) => {
 app.patch('/user/deletefav/:username', userController.deleteFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
 });
+
+// // save allergy user's profile
+// app.patch('/user/addAllergy/:username', userController.addAllergy, (req, res) => {
+//   res.status(200).json(res.locals.allergy);
+// });
 
 // global error handler
 app.use((err, req, res, next) => {

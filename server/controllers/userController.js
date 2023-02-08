@@ -1,9 +1,10 @@
-const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const User = require('../models/userModel');
+
 const userController = {};
 
 userController.createUser = async (req, res, next) => {
-  const { username, password, allergy } = req.body;
+  const { username, password } = req.body;
 
   try {
     // check first to see if user is already created
@@ -12,7 +13,7 @@ userController.createUser = async (req, res, next) => {
       console.log('yes user is created');
       throw new Error('username is already in use');
     }
-    const newUser = await new User({ username, password, allergy });
+    const newUser = await new User({ username, password });
     await newUser.save();
     res.locals.user = newUser;
     return next();
@@ -28,7 +29,7 @@ userController.createUser = async (req, res, next) => {
 userController.verifyUser = async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    //grab encrypted password from db
+    // grab encrypted password from db
     const user = await User.find({ username });
     console.log(user);
     if (!user[0]) {
@@ -51,18 +52,18 @@ userController.verifyUser = async (req, res, next) => {
 };
 
 userController.addFavorite = async (req, res, next) => {
-  const username = req.params.username;
+  const { username } = req.params;
   try {
     const user = await User.findOne({ username });
     const favorite = user?.favorite;
     if (!user) {
       throw Error('user not found');
     }
-    //const favorite = user.favorite;
-    //findoneandupdate {username}, {favorite:[...favorite,food]}
+    // const favorite = user.favorite;
+    // findoneandupdate {username}, {favorite:[...favorite,food]}
     const addFavorite = await User.findOneAndUpdate(
       { username },
-      { favorite: [...favorite, req.body] }
+      { favorite: [...favorite, req.body] },
     );
     if (!addFavorite) {
       throw Error('user cannot be updated');
@@ -76,11 +77,11 @@ userController.addFavorite = async (req, res, next) => {
       message: { err: error.message },
     });
   }
-  //findOne => return the user
+  // findOne => return the user
 };
 
 userController.getFavorite = async (req, res, next) => {
-  const username = req.params.username;
+  const { username } = req.params;
   try {
     const user = await User.findOne({ username });
     res.locals.favorite = user.favorite;
@@ -95,7 +96,7 @@ userController.getFavorite = async (req, res, next) => {
 };
 
 userController.deleteFavorite = async (req, res, next) => {
-  const username = req.params.username;
+  const { username } = req.params;
   const { food } = req.body;
   try {
     const user = await User.findOne({ username });
@@ -103,11 +104,11 @@ userController.deleteFavorite = async (req, res, next) => {
     if (!user) {
       throw Error('user not found');
     }
-    //const favorite = user.favorite;
-    //findoneandupdate {username}, {favorite:[...favorite,food]}
+    // const favorite = user.favorite;
+    // findoneandupdate {username}, {favorite:[...favorite,food]}
     const deleteFavorite = await User.findOneAndUpdate(
       { username },
-      { favorite: favorite.filter((obj) => obj.food !== food) }
+      { favorite: favorite.filter((obj) => obj.food !== food) },
     );
     if (!deleteFavorite) {
       throw Error('user cannot be updated');
@@ -121,7 +122,37 @@ userController.deleteFavorite = async (req, res, next) => {
       message: { err: error.message },
     });
   }
-  //findOne => return the user
+  // findOne => return the user
+};
+
+/ ///// Edit user preferences
+userController.addAllergy = async (req, res, next) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    const allergy = user?.allergy;
+    if (!user) {
+      throw Error('user not found');
+    }
+    // const favorite = user.favorite;
+    // findoneandupdate {username}, {favorite:[...favorite,food]}
+    const addAllergy = await User.findOneAndUpdate(
+      { username },
+      { allergy: [...allergy, req.body] },
+    );
+    if (!addAllergy) {
+      throw Error('user cannot be updated');
+    }
+    res.locals.favorite = addAllergy;
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Error in userController.addFavorite middleware function',
+      status: 500,
+      message: { err: error.message },
+    });
+  }
+  // findOne => return the user
 };
 
 module.exports = userController;
