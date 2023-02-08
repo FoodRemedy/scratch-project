@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const profileRouter = require('./routes/profileRouter');
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
@@ -18,16 +19,6 @@ app.use(cookieParser());
 
 // Deliver static files
 app.use(express.static(path.resolve(__dirname, '../client')));
-
-// Route to fetch results for selected illness
-app.post(
-  '/search',
-  foodController.getFoods,
-  foodController.getFacts,
-  (req, res) => {
-    return res.status(200).send(res.locals.facts);
-  }
-);
 
 // Route to create new user
 app.post(
@@ -62,29 +53,18 @@ app.delete('/logout', cookieController.removeSessionCookie, (req, res) => {
   return res.sendStatus(200);
 });
 
-// // Route to save favorite food to user's favorite folder
-// app.patch('/user/addfav/:username', userController.addFavorite, (req, res) => {
-//   res.status(200).json(res.locals.favorite);
-// });
+// Route to fetch results for selected illness
+app.post(
+  '/search',
+  foodController.getFoods,
+  foodController.getFacts,
+  (req, res) => {
+    return res.status(200).send(res.locals.facts);
+  }
+);
 
-// // Route to get a collection of favorite food for a user
-// app.get('/user/:username', userController.getFavorite, (req, res) => {
-//   res.status(200).json(res.locals.favorite);
-// });
-
-// // Route to delete a favorite food from a user's favorite collection
-// app.patch(
-//   '/user/deletefav/:username',
-//   userController.deleteFavorite,
-//   (req, res) => {
-//     res.status(200).json(res.locals.favorite);
-//   }
-// );
-
-// React Routes are ignored...
-app.get('/*', (req, res) => {
-  return res.redirect('/');
-});
+// Route to profile endpoint
+app.use('/profile', profileRouter);
 
 // Catch all route
 app.use('/', (req, res) => {
