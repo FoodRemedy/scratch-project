@@ -17,6 +17,7 @@ userController.createUser = async (req, res, next) => {
     res.locals.user = newUser;
     return next();
   } catch (error) {
+    console.log(error);
     return next({
       log: 'Error in userController.createUser middleware function',
       status: 500,
