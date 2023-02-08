@@ -1,7 +1,10 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
+  mode: process.env.NODE_ENV,
   entry: path.resolve(__dirname, './client/index.js'),
   module: {
     rules: [
@@ -32,7 +35,15 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './client/index.html',
     }),
-  ],
+  ].concat(
+    devMode
+      ? []
+      : [
+          new MiniCssExtractPlugin({
+            filename: 'style.css',
+          }),
+        ]
+  ),
   devServer: {
     static: {
       directory: path.resolve(__dirname, './public'),

@@ -1,0 +1,66 @@
+@import '_variables';
+
+//dropdown
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100vw;
+  max-height: 50rem;
+  background-color: $lightestLime;
+
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 4rem;
+    margin: 1.5rem;
+    padding: 1rem;
+    border: 0.125rem solid $secondarySalmon;
+    border-radius: 5%;
+    width: 50rem;
+    height: 100%;
+    box-shadow: 1rem 1.5rem 1.6rem 0rem rgb(128, 128, 128, 0.1);
+    background-color: white;
+    label {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      text-align: center;
+    }
+    button {
+      max-width: 50%;
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+    select {
+      appearance: none;
+      text-align: center;
+      margin: 2rem;
+      font-size: 4rem;
+      padding: 1rem;
+      min-width: 25rem;
+      background-color: white;
+      border-radius: 0.5rem;
+    }
+    select::-ms-expand {
+      display: none;
+    }
+    option {
+      font-size: 4rem;
+      text-align: center;
+    }
+  }
+}
+
+// .dropdown label {
+//   padding: 20px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
+// }
