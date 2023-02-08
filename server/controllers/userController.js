@@ -47,7 +47,7 @@ userController.createUser = async (req, res, next) => {
   } 
   catch (err) {
     return next({
-      log: `ERROR - userController.createUser: ${err}`,
+      log: `ERROR - userController.createUser: ${err}.`,
       status: 400,
       message: { err: 'Failed to create user. Check server log for details.' },
     });
@@ -58,12 +58,21 @@ userController.createUser = async (req, res, next) => {
 userController.verifyUser = async (req, res, next) => {
   const { username, password } = req.body;
 
+  // Username & password type validation - must be type String
+  if (typeof username !== 'string' || typeof password !== 'string') {
+    return next({
+      log: 'ERROR - userController.verifyUser: request body contains invalid type.',
+      status: 400,
+      message: { err: 'Failed to verify user. Check server log for details.' },
+    });
+  }
+
   try {
     // Check if username exists
     const userMatch = await User.findOne({ username });
     if (userMatch === null) {
       return next({
-        log: `ERROR - userController.verifyUser: ${err}`,
+        log: `ERROR - userController.verifyUser: ${err}.`,
         status: 400,
         message: { err: 'Invalid username or password.' },
       });
@@ -73,7 +82,7 @@ userController.verifyUser = async (req, res, next) => {
     const passwordMatch = await bcrypt.compare(password, userMatch.password);
     if (passwordMatch === false) {
       return next({
-        log: `ERROR - userController.verifyUser: ${err}`,
+        log: `ERROR - userController.verifyUser: ${err}.`,
         status: 400,
         message: { err: 'Invalid username or password.' },
       });
@@ -84,7 +93,7 @@ userController.verifyUser = async (req, res, next) => {
   } 
   catch (err) {
     return next({
-      log: `ERROR - userController.verifyUser: ${err}`,
+      log: `ERROR - userController.verifyUser: ${err}.`,
       status: 400,
       message: { err: 'Failed to verify user. Check server log for details.' },
     });

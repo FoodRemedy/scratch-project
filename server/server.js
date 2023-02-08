@@ -63,7 +63,7 @@ app.post("/login",
     return res.status(200).json(username);
 });
 
-// Route tave favorite food to user's favorite folder
+// Route to save favorite food to user's favorite folder
 app.patch("/user/addfav/:username", userController.addFavorite, (req, res) => {
   return res.status(200).json(res.locals.favorite);
 });
