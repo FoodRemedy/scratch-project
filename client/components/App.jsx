@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import FeatureContainer from '../containers/FeaturePageContainer';
 import Login from './Login';
+import Profile from './Profile';
 
 function App() {
   const [globalUser, setGlobalUser] = useState('');
@@ -29,6 +30,15 @@ function App() {
                 globalUser={globalUser}
                 setGlobalUser={setGlobalUser}
               />
+            ) : null
+          }
+        />
+        <Route
+          path='/profile/:username'
+          exact
+          element={
+            globalUser ? (
+              <Profile setGlobalUser={setGlobalUser} globalUser={globalUser} />
             ) : null
           }
         />

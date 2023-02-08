@@ -175,4 +175,30 @@ userController.deleteFavorite = async (req, res, next) => {
   //findOne => return the user
 };
 
+// jackson added this code
+userController.getProfile = async (req, res, next) => {
+  const { username } = req.params;
+  const { firstName, lastName, allergy, diet } = req.body;
+  try {
+    const user = await User.find({ username });
+    console.log(user);
+    if (!user[0]) {
+      console.log('no user found');
+      throw new Error('no user found');
+    }
+    const matched = await bcrypt.compare(password, user[0].password);
+    if (!matched) {
+      throw new Error('password incorrect');
+    }
+    res.locals.username = username;
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Error in userController.verifyUser middleware function',
+      status: 500,
+      message: { err: error.message },
+    });
+  }
+};
+
 module.exports = userController;
