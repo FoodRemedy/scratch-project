@@ -101,7 +101,6 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
-
 // OLD addfav - currently adds entire req body as an object to the array on the user pref
 // userController.addFavorite = async (req, res, next) => {
 //   console.log('inside the add favorite') 
@@ -133,21 +132,23 @@ userController.verifyUser = async (req, res, next) => {
 //   // findOne => return the user
 // };
 
-userController.getFavorite = async (req, res, next) => {
-  const { username } = req.params;
-  try {
-    const user = await User.findOne({ username });
-    res.locals.favorite = user.favorite;
-    next();
-  } catch (error) {
-    return next({
-      log: 'Error in userController.getFavorites middleware function',
-      status: 500,
-      message: { err: error.message },
-    });
-  }
-};
+// OLD get faovrites
+// userController.getFavorite = async (req, res, next) => {
+//   const { username } = req.params;
+//   try {
+//     const user = await User.findOne({ username });
+//     res.locals.favorite = user.favorite;
+//     next();
+//   } catch (error) {
+//     return next({
+//       log: 'Error in userController.getFavorites middleware function',
+//       status: 500,
+//       message: { err: error.message },
+//     });
+//   }
+// };
 
+// OLD delte favorite
 // userController.deleteFavorite = async (req, res, next) => {
 //   const { username } = req.params;
 //   const { food } = req.body;
@@ -178,7 +179,7 @@ userController.getFavorite = async (req, res, next) => {
 //   // findOne => return the user
 // };
 
-// chanda - adds an array of elements individually to the array
+// NEW - adds an array of elements individually to the array
   // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
 userController.addFavorite = async (req, res, next) => {
   console.log('inside the add favorite');
@@ -209,7 +210,7 @@ userController.addFavorite = async (req, res, next) => {
 };
 
 
-// chanda - deletes all elemnts recieves in the favorites array 
+// NEW - deletes all elemnts recieves in the favorites array 
   // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
 userController.deleteFavorite = async (req, res, next) => {
   console.log('inside the delete favorite');
