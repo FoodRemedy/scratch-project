@@ -101,10 +101,8 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
-// needs to be tested
+// Overwrites current profile preferences with new selections
 userController.updateProfile = async (req, res, next) => {
-  // recieves an entirely fleshed out profile, finds the user in the db and overwrites it
-  userController.updateProfile = async (req, res, next) => {
     const { username } = req.params;
       try {
         const user = await User.findOneAndUpdate({ username }, req.body, { new: true });
@@ -121,10 +119,28 @@ userController.updateProfile = async (req, res, next) => {
         message: { err: error.message },
       });
     }
-  };
 };
 
-userController.deleteUser = async (req, res, next) => {};
+// Deletes user entirely from database
+userController.deleteUser = async (req, res, next) => {
+    const { username } = req.params;
+      try {
+        const result = await User.findOneAndDelete({ username });
+        if (!user) {
+          throw Error('user not found');
+        }
+    res.locals.result = result;
+    return next();
+    } 
+    catch (error) {
+      return next({
+        log: 'Error in userController.deleteUser middleware function',
+        status: 500,
+        message: { err: error.message },
+      });
+    }
+};
+
 
 module.exports = userController;
 
