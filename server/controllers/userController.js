@@ -101,7 +101,8 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
-// currently adds entire req body as an object to the array on the user pref
+
+// OLD addfav - currently adds entire req body as an object to the array on the user pref
 // userController.addFavorite = async (req, res, next) => {
 //   console.log('inside the add favorite') 
 //   const { username } = req.params;
@@ -147,25 +148,56 @@ userController.getFavorite = async (req, res, next) => {
   }
 };
 
-userController.deleteFavorite = async (req, res, next) => {
+// userController.deleteFavorite = async (req, res, next) => {
+//   const { username } = req.params;
+//   const { food } = req.body;
+//   try {
+//     const user = await User.findOne({ username });
+//     const favorite = user?.favorite;
+//     if (!user) {
+//       throw Error('user not found');
+//     }
+//     // const favorite = user.favorite;
+//     // findoneandupdate {username}, {favorite:[...favorite,food]}
+//     const deleteFavorite = await User.findOneAndUpdate(
+//       { username },
+//       { favorite: favorite.filter((obj) => obj.food !== food) },
+//     );
+//     if (!deleteFavorite) {
+//       throw Error('user cannot be updated');
+//     }
+//     res.locals.favorite = deleteFavorite;
+//     return next();
+//   } catch (error) {
+//     return next({
+//       log: 'Error in userController.addFavorite middleware function',
+//       status: 500,
+//       message: { err: error.message },
+//     });
+//   }
+//   // findOne => return the user
+// };
+
+// chanda - adds an array of elements individually to the array
+  // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+userController.addFavorite = async (req, res, next) => {
+  console.log('inside the add favorite');
   const { username } = req.params;
-  const { food } = req.body;
+  const { favorite } = req.body;
   try {
-    const user = await User.findOne({ username });
-    const favorite = user?.favorite;
+    const user = await User.findOne({ username: username });
     if (!user) {
       throw Error('user not found');
     }
-    // const favorite = user.favorite;
-    // findoneandupdate {username}, {favorite:[...favorite,food]}
-    const deleteFavorite = await User.findOneAndUpdate(
-      { username },
-      { favorite: favorite.filter((obj) => obj.food !== food) },
-    );
-    if (!deleteFavorite) {
-      throw Error('user cannot be updated');
-    }
-    res.locals.favorite = deleteFavorite;
+    
+    favorite.forEach((fav) => {
+      if (!user.favorite.includes(fav)) {
+        user.favorite.push(fav);
+      }
+    });
+    await user.save();
+    res.locals.favorite = user.favorite; // sends updated favorites array
+    console.log(res.locals.favorite)
     return next();
   } catch (error) {
     return next({
@@ -174,33 +206,34 @@ userController.deleteFavorite = async (req, res, next) => {
       message: { err: error.message },
     });
   }
-  // findOne => return the user
 };
 
-userController.addFavorite = async (req, res, next) => {
-  console.log('inside the add favorite') 
+
+// chanda - deletes all elemnts recieves in the favorites array 
+  // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+userController.deleteFavorite = async (req, res, next) => {
+  console.log('inside the delete favorite');
   const { username } = req.params;
-  const { favorite } = req.body
+  const deleteFavorite  = req.body.favorite;
   try {
-    const user = await User.findOneAndUpdate(
-      { username: username },
-      { $push: {favorite: favorite } },
-      { new: true }
-      );
-      
-      if (!user) {
+    const user = await User.findOne({ username: username });
+    if (!user) {
       throw Error('user not found');
     }
-    res.locals.favorite = user.favorite;
+    for (let i = deleteFavorite.length - 1; i > -1; i--){
+      user.favorite = user.favorite.filter(fav => fav !== deleteFavorite[i] );
+    }
+
+    await user.save();
+    res.locals.favorite = user.favorite; // sends back updated favorites array
     return next();
   } catch (error) {
     return next({
-      log: 'Error in userController.addFavorite middleware function',
+      log: 'Error in userController.deleteFavorite middleware function',
       status: 500,
       message: { err: error.message },
     });
   }
-  // findOne => return the user
 };
 
 module.exports = userController;
