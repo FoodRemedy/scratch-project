@@ -56,6 +56,26 @@ const allergyController = {};
     }
   };
 
-  allergyController.getAllergy = async (req, res, next) => {}
+    // returns current allergies
+  allergyController.getAllergy = async (req, res, next) => {
+      console.log('inside the get allergy');
+      const { username } = req.params;
+      try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+          throw Error('user not found');
+        }
+        res.locals.allergy = user.allergy; // sends back updated allergy array
+        return next();
+      } catch (error) {
+        return next({
+          log: 'Error in userController.getallergy middleware function',
+          status: 500,
+          message: { err: error.message },
+        });
+      }
+    };
+  
+  
 
 module.exports = allergyController;
