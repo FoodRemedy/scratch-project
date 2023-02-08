@@ -27,35 +27,26 @@ cookieController.verifySessionCookie = async (req, res, next) => {
 
   // Decode token
   const { sessionToken } = req.cookies;
-
-  try {
-    const { _id, username } = jwt.verify(sessionToken, process.env.JWT_SECRET);
-
-    // Check decoded payload against db
-    const userMatch = await User.findOne({ _id, username });
-    if (userMatch === null) {
-      return next({
-        log: `ERROR - cookieController.verifySessionCookie: Failed to match payload.`,
+  jwt.verify(sessionToken, process.env.JWT_SECRET, (err, decoded) => {
+		if (err) {
+			return next({
+        log: `ERROR - cookieController.verifySessionCookie, failed to verify token: ${err}`,
         status: 400,
         message: { err: 'User is not authenticated.' },
       });
+		} 
+    else {
+      res.locals.user = decoded;
+      return next();
     }
-
-    return next();
-  } 
-  catch (err) {
-    return next({
-      log: `ERROR - cookieController.verifySessionCookie, failed to decode token or match payload: ${err}`,
-      status: 400,
-      message: { err: 'User is not authenticated.' },
-    });
-  }
+  });
 };
 
+// Clear JWT session cookie
 cookieController.removeSessionCookie = (req, res, next) => {
   res.clearCookie('sessionToken');
 
-  next();
+  return next();
 };
 
 module.exports = cookieController

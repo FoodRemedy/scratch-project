@@ -42,8 +42,7 @@ app.post(
   foodController.getFacts,
   (req, res) => {
     return res.status(200).send(res.locals.facts)
-  }
-);
+  });
 
 // Route to create new user
 app.post("/signup", 
@@ -52,7 +51,7 @@ app.post("/signup",
   (req, res) => {
     const { username } = res.locals.user;
     return res.status(200).json(username);
-});
+  });
 
 // Route to log user in
 app.post("/login", 
@@ -61,7 +60,22 @@ app.post("/login",
   (req, res) => {
     const { username } = res.locals.user;
     return res.status(200).json(username);
-});
+  });
+
+// Route to verify authentication
+app.get("/verify", 
+  cookieController.verifySessionCookie,
+  (req, res) => {
+    const { username } = res.locals.user;
+    return res.status(200).json(username);
+  });
+
+// Route to logout
+app.delete("/logout",
+  cookieController.removeSessionCookie,
+  (req, res) => {
+    return res.sendStatus(200);
+  });
 
 // Route to save favorite food to user's favorite folder
 app.patch("/user/addfav/:username", userController.addFavorite, (req, res) => {
@@ -79,8 +93,7 @@ app.patch(
   userController.deleteFavorite,
   (req, res) => {
     return res.status(200).json(res.locals.favorite);
-  }
-);
+  });
 
 // Catch all route
 app.use('/', (req, res) => {
