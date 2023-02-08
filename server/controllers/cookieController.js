@@ -53,7 +53,9 @@ cookieController.verifySessionCookie = async (req, res, next) => {
 };
 
 cookieController.removeSessionCookie = (req, res, next) => {
+  res.clearCookie('sessionToken');
 
+  next();
 };
 
 module.exports = cookieController
