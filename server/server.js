@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const profileRouter = require('./routes/profileRouter');
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
@@ -62,107 +63,8 @@ app.post(
   }
 );
 
-// Route to add allergy preference
-app.post(
-  '/profile/allergy/:username',
-  allergyController.addAllergy,
-  (req, res) => {
-    const { allergy } = res.locals;
-    return res.status(200).json(allergy);
-  }
-);
-
-// Route to add blacklist preference
-app.post(
-  '/profile/blacklist/:username',
-  blacklistController.addBlacklist,
-  (req, res) => {
-    const { blacklist } = res.locals;
-    return res.status(200).json(blacklist);
-  }
-);
-
-// Route to add diet preference
-app.post('/profile/diet/:username', dietController.addDiet, (req, res) => {
-  const { diet } = res.locals;
-  return res.status(200).json(diet);
-});
-
-// Route to add favorite preference
-app.post(
-  '/profile/favorite/:username',
-  favoriteController.addFavorite,
-  (req, res) => {
-    const { favorite } = res.locals;
-    return res.status(200).json(favorite);
-  }
-);
-
-// Route to remove allergy preference
-app.delete(
-  '/profile/allergy/:username',
-  allergyController.deleteAllergy,
-  (req, res) => {
-    const { allergy } = res.locals;
-    return res.status(200).json(allergy);
-  }
-);
-
-// Route to remove blacklist preference
-app.delete(
-  '/profile/blacklist/:username',
-  blacklistController.deleteBlacklist,
-  (req, res) => {
-    const { blacklist } = res.locals;
-    return res.status(200).json(blacklist);
-  }
-);
-
-// Route to remove diet preference
-app.delete('/profile/diet/:username', dietController.deleteDiet, (req, res) => {
-  const { diet } = res.locals;
-  return res.status(200).json(diet);
-});
-
-// Route to remove favorite preference
-app.delete(
-  '/profile/favorite/:username',
-  favoriteController.deleteFavorite,
-  (req, res) => {
-    const { favorite } = res.locals;
-    return res.status(200).json(favorite);
-  }
-);
-
-// Route to get all profile preferences
-app.get(
-  '/profile/:username',
-  allergyController.getAllergy,
-  blacklistController.getBlacklist,
-  dietController.getDiet,
-  favoriteController.getFavorite,
-  (req, res) => {
-    const { allergy, blacklist, diet, favorite } = res.locals;
-    const preferences = { allergy, blacklist, diet, favorite };
-
-    return res.status(200).json(preferences);
-  }
-);
-
-// Route to update all profile preferences
-app.patch(
-  '/profile/:username',
-  allergyController.updateAllergy,
-  blacklistController.updateBlacklist,
-  dietController.updateDiet,
-  favoriteController.updateFavorite,
-  (req, res) => {
-    const { allergy, blacklist, diet, favorite } = res.locals;
-    const preferences = { allergy, blacklist, diet, favorite };
-
-    return res.status(200).json(preferences);
-  }
-);
+// Route to profile endpoint
+app.use('/profile', profileRouter);
 
 // Catch all route
 app.use('/', (req, res) => {
