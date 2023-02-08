@@ -69,7 +69,7 @@ function FeatureContainer(props) {
           parsedData.push(foodRow);
         });
         console.log('parsedData', parsedData);
-        setFoodEntries(parsedData);
+        setFoodEntries(parsedData);git 
       })
       .catch((err) => console.log(err));
   };
