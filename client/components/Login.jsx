@@ -38,6 +38,7 @@ function Login(props) {
         username,
         password,
       }),
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => {

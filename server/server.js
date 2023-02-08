@@ -44,20 +44,22 @@ app.post(
   }
 );
 
-// Route to create user
+// Route to create new user
 app.post("/signup", 
   userController.createUser,
-  cookieController.setJwtSessionCookie,
+  cookieController.setSessionCookie,
   (req, res) => {
     const { username } = res.locals.user;
     return res.status(200).json(username);
 });
 
-// Route to verify user
+// Route to log user in
 app.post("/login", 
   userController.verifyUser,
+  cookieController.setSessionCookie,
   (req, res) => {
-    return res.status(200).json(res.locals.username);
+    const { username } = res.locals.user;
+    return res.status(200).json(username);
 });
 
 // Route tave favorite food to user's favorite folder

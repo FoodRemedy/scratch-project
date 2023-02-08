@@ -27,10 +27,10 @@ userController.createUser = async (req, res, next) => {
   }
 
   try {
-    // Check if username already exists
-    const usernameMatch = await User.findOne({ username });
+    // Check if username already in use
+    const userMatch = await User.findOne({ username });
     
-    if (usernameMatch !== null) {
+    if (userMatch !== null) {
       return next({
         log: 'ERROR - userController.createUser: request body contains username that is already in use.',
         status: 400,
@@ -38,13 +38,11 @@ userController.createUser = async (req, res, next) => {
       });
     }
 
-    // Create hashed password
+    // Hash password & write new user to database
     const hashedPassword = await bcrypt.hash(password, SALT_WORK_FACTOR);
-    
-    // Write new user to database
     const user = await User.create({ username, password: hashedPassword });
+
     res.locals.user = user;
-    
     return next();
   } 
   catch (err) {
@@ -56,27 +54,39 @@ userController.createUser = async (req, res, next) => {
   }
 };
 
+// Verify user credentials against database records
 userController.verifyUser = async (req, res, next) => {
   const { username, password } = req.body;
+
   try {
-    //grab encrypted password from db
-    const user = await User.find({ username });
-    console.log(user);
-    if (!user[0]) {
-      console.log('no user found');
-      throw new Error('no user found');
+    // Check if username exists
+    const userMatch = await User.findOne({ username });
+    if (userMatch === null) {
+      return next({
+        log: `ERROR - userController.verifyUser: ${err}`,
+        status: 400,
+        message: { err: 'Invalid username or password.' },
+      });
     }
-    const matched = await bcrypt.compare(password, user[0].password);
-    if (!matched) {
-      throw new Error('password incorrect');
+
+    // Check if found user password matches provided password
+    const passwordMatch = await bcrypt.compare(password, userMatch.password);
+    if (passwordMatch === false) {
+      return next({
+        log: `ERROR - userController.verifyUser: ${err}`,
+        status: 400,
+        message: { err: 'Invalid username or password.' },
+      });
     }
-    res.locals.username = username;
+
+    res.locals.user = userMatch;
     return next();
-  } catch (error) {
+  } 
+  catch (err) {
     return next({
-      log: 'Error in userController.verifyUser middleware function',
-      status: 500,
-      message: { err: error.message },
+      log: `ERROR - userController.verifyUser: ${err}`,
+      status: 400,
+      message: { err: 'Failed to verify user. Check server log for details.' },
     });
   }
 };
