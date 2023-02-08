@@ -21,6 +21,7 @@ const MONGO_URI =
 mongoose
   .connect(MONGO_URI, {
     // options for the connect method to parse the URI
+    dbName: 'alchemeal',
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
