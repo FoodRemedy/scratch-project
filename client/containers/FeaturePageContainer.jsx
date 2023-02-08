@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Table from '../components/Table';
 import DropDown from '../components/DropDown';
 import Cardlist from '../components/Cardlist';
+import { resetApp, setAppPage } from '../slices';
+import { useSelector, useDispatch } from 'react-redux';
 
 function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
+  const globalUser = useSelector((state) => state.control.globalUser);
   const [ailment, setAilment] = React.useState('headache');
-  const { setGlobalUser, appPage, setAppPage } = props;
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (appPage !== '/feature') {
-      console.log('navigating...', appPage);
-      navigate(appPage);
-    }
-  });
-
+  const { appPage } = props;
+  const dispatch = useDispatch();
   const tableProperties = [
     'CA',
     'K',
@@ -50,7 +44,6 @@ function FeatureContainer(props) {
   };
 
   const handleLogout = () => {
-    props.setGlobalUser('');
     fetch('/logout', {
       method: 'DELETE',
     })
@@ -58,8 +51,7 @@ function FeatureContainer(props) {
         if (!res.ok) {
           throw new Error(`Error! status: ${res.status}`);
         }
-        setGlobalUser('');
-        setAppPage('/');
+        dispatch(resetApp());
       })
       .catch((err) => {
         console.log(err);
@@ -95,8 +87,8 @@ function FeatureContainer(props) {
 
   // Jackson added this function
   const handleProfile = () => {
-    console.log(props.globalUser);
-    navigate(`/profile/${props.globalUser}`);
+    console.log(globalUser);
+    dispatch(setAppPage(`/profile`));
   };
 
   return (
@@ -104,7 +96,7 @@ function FeatureContainer(props) {
       <nav>
         <h1>AlcheMeal</h1>
         <div className='logoutContainer'>
-          <p>{props.globalUser}</p>
+          <p>{globalUser}</p>
           <button onClick={handleProfile} className='logout'>
             Edit Profile
           </button>

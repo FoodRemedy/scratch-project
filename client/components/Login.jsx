@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAppPage, setGlobalUser, setIsLoggedIn } from '../slices';
 
 function Login(props) {
-  const { globalUser, setGlobalUser, appPage, setAppPage } = props;
+  const { appPage } = props;
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
-  const [signUpError, setSignUpError] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log('navigating...', appPage);
-    navigate(appPage);
-  }, [globalUser]);
 
   useEffect(() => {
     console.log('checking if user already logged in...');
@@ -29,8 +24,9 @@ function Login(props) {
       })
       .then((data) => {
         if (data !== undefined) {
-          setGlobalUser(data);
-          setAppPage('/feature');
+          dispatch(setGlobalUser(data));
+          dispatch(setIsLoggedIn(true));
+          dispatch(setAppPage('/feature'));
         }
       })
       .catch((err) => {
@@ -46,36 +42,12 @@ function Login(props) {
   };
 
   const handleSignup = (e) => {
-    setLoginError(false);
     e.preventDefault();
-    fetch('/signup', {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log('user created:', data);
-        setSignUpError(false);
-        navigate('/signup')
-      })
-      .catch((err) => {
-        setSignUpError(true);
-        console.log(err);
-      });
+
+    dispatch(setAppPage('/signup'));
   };
 
   const handleLogin = (e) => {
-    setSignUpError(false);
     e.preventDefault();
     fetch('/login', {
       method: 'POST',
@@ -94,8 +66,9 @@ function Login(props) {
       })
       .then((data) => {
         console.log('username', data);
-        setGlobalUser(data);
-        setAppPage('/feature');
+        dispatch(setGlobalUser(data));
+        dispatch(setIsLoggedIn(true));
+        dispatch(setAppPage('/feature'));
         setLoginError(false);
       })
       .catch((err) => {
@@ -110,15 +83,20 @@ function Login(props) {
   }
 
   return (
-    <div className="loginWrapper">
-     
-    
-    <form onSubmit={handleSubmit} className="loginContainer">
-      <h1>Food Remedy</h1>
-      <label htmlFor="username">
-        <b>Username</b>
-        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
-      </label>
+    <div className='loginWrapper'>
+      <form onSubmit={handleSubmit} className='loginContainer'>
+        <h1>Food Remedy</h1>
+        <label htmlFor='username'>
+          <b>Username</b>
+          <input
+            id='username'
+            type='text'
+            onChange={handleChange}
+            placeholder='Enter Username'
+            name='username'
+            // required={appPage !== '/' ? false : true}
+          />
+        </label>
 
         <label htmlFor='password'>
           <b>Password</b>
@@ -128,33 +106,22 @@ function Login(props) {
             onChange={handleChange}
             placeholder='Enter Password'
             name='password'
-            required
+            // required={appPage !== '/' ? false : true}
           />
         </label>
 
-      <button
-        type="submit"
-        onClick={handleSignup}
-      >
-        Sign Up
-      </button>
-      <button type="submit" onClick={handleLogin}>
-        Login
-        {/* { <Link to={
-          // if globalUser === '', link to the current page
-          // otherwise, link to /feature
-          globalUser ? {
-            pathname: '/feature',
-          } : {
-            pathname: '/',
-          }
-          }
-        >
-          Login
-        </Link> } */}
-      </button>
-
-    </form>
+        <button type='submit' onClick={handleLogin}>
+          LOGIN
+        </button>
+        {loginError ? <span>Username or Password Incorrect</span> : null}
+        <hr></hr>
+        <p>
+          <b>Don't have an account?</b>
+        </p>
+        <button type='submit' onClick={handleSignup}>
+          Sign Up With Alchemeal
+        </button>
+      </form>
     </div>
   );
 }
