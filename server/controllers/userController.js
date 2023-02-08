@@ -29,6 +29,7 @@ userController.createUser = async (req, res, next) => {
   try {
     // Check if username already exists
     const usernameMatch = await User.findOne({ username });
+    
     if (usernameMatch !== null) {
       return next({
         log: 'ERROR - userController.createUser: request body contains username that is already in use.',
@@ -39,9 +40,9 @@ userController.createUser = async (req, res, next) => {
 
     // Create hashed password
     const hashedPassword = await bcrypt.hash(password, SALT_WORK_FACTOR);
-
+    
     // Write new user to database
-    const user = await User.create({ username, hashedPassword });
+    const user = await User.create({ username, password: hashedPassword });
     res.locals.user = user;
     
     return next();
