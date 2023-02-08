@@ -1,14 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login(props) {
-  const { globalUser, setGlobalUser } = props;
+  const { globalUser, setGlobalUser, appPage, setAppPage } = props;
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
   const [signUpError, setSignUpError] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('navigating...', appPage);
+    navigate(appPage);
+  }, [globalUser]);
+
+  useEffect(() => {
+    console.log('checking if user already logged in...');
+    fetch('/verify', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data !== undefined) {
+          setGlobalUser(data);
+          setAppPage('/feature');
+        }
+      })
+      .catch((err) => {
+        // console.log(err);
+        // console.log('user not logged in returning to login.');
+      });
+  }, []);
 
   const handleChange = (event) => {
     console.log('username before click', username);
@@ -19,7 +48,7 @@ function Login(props) {
   const handleSignup = (e) => {
     setLoginError(false);
     e.preventDefault();
-    fetch('http://localhost:3000/signup', {
+    fetch('/signup', {
       method: 'POST',
       body: JSON.stringify({
         username,
@@ -32,7 +61,7 @@ function Login(props) {
         if (!res.ok) {
           throw new Error(`Error! status: ${res.status}`);
         }
-        res.json();
+        return res.json();
       })
       .then((data) => {
         console.log('user created:', data);
@@ -47,7 +76,7 @@ function Login(props) {
   const handleLogin = (e) => {
     setSignUpError(false);
     e.preventDefault();
-    fetch('http://localhost:3000/login', {
+    fetch('/login', {
       method: 'POST',
       body: JSON.stringify({
         username,
@@ -65,7 +94,7 @@ function Login(props) {
       .then((data) => {
         console.log('username', data);
         setGlobalUser(data);
-        navigate('/feature');
+        setAppPage('/feature');
         setLoginError(false);
       })
       .catch((err) => {

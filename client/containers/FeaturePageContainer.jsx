@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import DropDown from '../components/DropDown';
@@ -6,7 +6,15 @@ import DropDown from '../components/DropDown';
 function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
   const [ailment, setAilment] = React.useState('headache');
+  const { setGlobalUser, appPage, setAppPage } = props;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (appPage !== '/feature') {
+      console.log('navigating...', appPage);
+      navigate(appPage);
+    }
+  });
 
   const tableProperties = [
     'CA',
@@ -42,12 +50,24 @@ function FeatureContainer(props) {
 
   const handleLogout = () => {
     props.setGlobalUser('');
-    navigate('/');
-  }
+    fetch('/logout', {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error! status: ${res.status}`);
+        }
+        setGlobalUser('');
+        setAppPage('/');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleClick = () => {
     console.log('ailment', ailment);
-    fetch('http://localhost:3000/search', {
+    fetch('/search', {
       method: 'POST',
       body: JSON.stringify({ ailment }),
       headers: { 'Content-Type': 'application/json' },
@@ -76,11 +96,11 @@ function FeatureContainer(props) {
     <>
       <nav>
         <h1>Food Remedy</h1>
-        <div className="logoutContainer">
+        <div className='logoutContainer'>
           <p>{props.globalUser}</p>
-          <button 
-            onClick={handleLogout}
-            className="logout">Logout</button>
+          <button onClick={handleLogout} className='logout'>
+            Logout
+          </button>
         </div>
       </nav>
 
