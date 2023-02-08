@@ -17,7 +17,7 @@ cookieController.setSessionCookie = (req, res, next) => {
 // Verify JWT from session cookie
 cookieController.verifySessionCookie = async (req, res, next) => {
   // Check if session token exists
-  if (!req.cookies.hasOwn(sessionToken)) {
+  if (!Object.hasOwn(req.cookies, 'sessionToken')) {
     return next({
       log: `ERROR - cookieController.verifySessionCookie: Failed to extract cookie.`,
       status: 400,
