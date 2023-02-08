@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
+const ENV = require('dotenv').config().parsed;
+const SALT_WORK_FACTOR = Number(ENV.SALT_WORK_FACTOR);
 
 const userSchema = new mongoose.Schema({
   username: {

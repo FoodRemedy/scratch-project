@@ -41,7 +41,6 @@ const data = [
   },
 ];
 
-
 const populateDB = () => {
   data.forEach((ailment) => {
     const chunk = JSON.stringify(ailment);
@@ -54,6 +53,5 @@ const populateDB = () => {
 };
 
 // populateDB();
-
 
 // ObjectParameterError: Parameter "obj" to Document() must be an object, got {"ailment":"headache","foods":["milk","yogurt","spinach","almonds","salmon"]}

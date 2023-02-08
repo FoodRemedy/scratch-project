@@ -1,30 +1,9 @@
 const path = require('path');
-
-const mongoose = require('mongoose');
-
 const express = require('express');
-
 const app = express();
-
 const cors = require('cors');
-
-const PORT = 3000;
-
 const foodController = require('./controllers/foodController');
-
 const userController = require('./controllers/userController');
-
-//connect to database
-const mongoURI =
-  'mongodb+srv://goblinshark:codesmith@foodremedy.nl2qzoj.mongodb.net/?retryWrites=true&w=majority';
-mongoose
-  .connect(mongoURI, {
-    // options for the connect method to parse the URI
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('Connected to Mongo DB.'))
-  .catch((err) => console.log(err));
 
 // needed to fix fetching problem in react
 app.use(cors());
@@ -54,18 +33,22 @@ app.post('/login', userController.verifyUser, (req, res) => {
 });
 
 //save favorite food to user's favorite folder
-app.patch('/user/addfav/:username',userController.addFavorite,(req, res)=> {
+app.patch('/user/addfav/:username', userController.addFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
-})
+});
 //get a collection of favorite food for a user
-app.get('/user/:username',userController.getFavorite,(req,res)=>{
+app.get('/user/:username', userController.getFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
-})
+});
 
 //delete a favorite food from a user's favorite collection
-app.patch('/user/deletefav/:username',userController.deleteFavorite,(req, res)=> {
-  res.status(200).json(res.locals.favorite);
-})
+app.patch(
+  '/user/deletefav/:username',
+  userController.deleteFavorite,
+  (req, res) => {
+    res.status(200).json(res.locals.favorite);
+  }
+);
 
 // global error handler
 app.use((err, req, res, next) => {
@@ -79,7 +62,4 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-// listens, confirms connection
-app.listen(PORT, () => {
-  console.log(`Success! Your application is running on port ${PORT}.`);
-});
+module.exports = app;
