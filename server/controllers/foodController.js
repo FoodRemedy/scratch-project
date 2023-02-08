@@ -30,21 +30,44 @@ foodController.getFoods = (req, res, next) => {
   }
 };
 
+// foodController.getFacts = async (req, res, next) => {
+//   console.log('hitting get facts');
+//   res.locals.facts = [];
+//   try {
+//     for (const food of res.locals.foods) {
+//       const newURL = preciseURL + food;
+//       const response = await fetch(newURL);
+//       const data = await response.json();
+//       res.locals.facts.push(data);
+//     }
+//     console.log('length', res.locals.facts.length);
+//     return next();
+//   } catch (error) {
+//     console.log(error);
+//     // error
+//     return next({
+//       log: 'Express error handler caught getFacts handler',
+//       status: 500,
+//       message: error,
+//     });
+//   }
+// };
+
 foodController.getFacts = async (req, res, next) => {
-  console.log('hitting get facts');
-  res.locals.facts = [];
+  console.log('inside of getFacts in food controller');
   try {
-    for (const food of res.locals.foods) {
-      const newURL = preciseURL + food;
-      const response = await fetch(newURL);
-      const data = await response.json();
-      res.locals.facts.push(data);
-    }
+    const facts = await Promise.all(
+      res.locals.foods.map(async (food) => {
+        const newURL = preciseURL + food;
+        const response = await fetch(newURL);
+        return response.json();
+      }),
+    );
+    res.locals.facts = facts;
     console.log('length', res.locals.facts.length);
     return next();
   } catch (error) {
     console.log(error);
-    // error
     return next({
       log: 'Express error handler caught getFacts handler',
       status: 500,
