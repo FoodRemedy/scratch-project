@@ -5,62 +5,94 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
+const cookieController = require("./controllers/cookieController");
 
-// needed to fix fetching problem in react
-app.use(cors());
+// Enable CORS for all origins, parse JSON payloads, parse cookies
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
+app.use(cookieParser())
 
-app.use(express.static(path.resolve(__dirname, '../client')));
+// Deliver static files
+app.use(express.static(path.resolve(__dirname, "../client")));
 
-// handles POST requests from illness dropdown
+// Route to fetch results for selected illness
 app.post(
-  '/search',
+  "/search",
   foodController.getFoods,
   foodController.getFacts,
-  (req, res) => res.status(200).send(res.locals.facts),
-);
+  (req, res) => {
+    return res.status(200).send(res.locals.facts)
+  });
 
-// route for signing up
-app.get('/signup', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/signup.html'));
-});
+// Route to create new user
+app.post("/signup", 
+  userController.createUser,
+  cookieController.setSessionCookie,
+  (req, res) => {
+    const { username } = res.locals.user;
+    return res.status(200).json(username);
+  });
 
-app.post('/signup', userController.createUser, (req, res) => {
-  res.status(200).json(res.locals.user);
-});
+// Route to log user in
+app.post("/login", 
+  userController.verifyUser,
+  cookieController.setSessionCookie,
+  (req, res) => {
+    const { username } = res.locals.user;
+    return res.status(200).json(username);
+  });
 
-app.post('/login', userController.verifyUser, (req, res) => {
-  res.status(200).json(res.locals.username);
-});
+// Route to verify authentication
+app.get("/verify", 
+  cookieController.verifySessionCookie,
+  (req, res) => {
+    const { username } = res.locals.user;
+    return res.status(200).json(username);
+  });
 
-//save favorite food to user's favorite folder
+// Route to logout
+app.delete("/logout",
+  cookieController.removeSessionCookie,
+  (req, res) => {
+    return res.sendStatus(200);
+  });
+
+// Route to save favorite food to user's favorite folder
 app.patch('/user/addfav/:username', userController.addFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
 });
-//get a collection of favorite food for a user
+
+// Route to get a collection of favorite food for a user
 app.get('/user/:username', userController.getFavorite, (req, res) => {
   res.status(200).json(res.locals.favorite);
 });
 
-//delete a favorite food from a user's favorite collection
+// Route to delete a favorite food from a user's favorite collection
 app.patch(
   '/user/deletefav/:username',
   userController.deleteFavorite,
   (req, res) => {
     res.status(200).json(res.locals.favorite);
-  }
-);
+  });
 
-// global error handler
+// Catch all route
+app.use('/', (req, res) => {
+  return res.status(404).json({err: "Not found."})
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {
-    log: 'Express error handler caught unknown middleware error',
+    log: "Express error handler caught unknown middleware error.",
     status: 500,
-    message: { err: 'An error occurred' },
+    message: { err: "An unknown error occurred." },
   };
-  const errorObj = { ...defaultErr, ...err };
+
+  const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });

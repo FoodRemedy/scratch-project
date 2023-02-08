@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const ENV = require('dotenv').config().parsed;
-const SALT_WORK_FACTOR = Number(ENV.SALT_WORK_FACTOR);
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -35,20 +32,6 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-});
-
-userSchema.pre('save', async function (next) {
-  try {
-    // "modification" includes creating a new pw, per mongoose
-    if (!this.isModified('password')) {
-      return next();
-    }
-    const hashedPassword = await bcrypt.hash(this.password, SALT_WORK_FACTOR);
-    this.password = hashedPassword;
-    return next();
-  } catch (err) {
-    return next(err);
-  }
 });
 
 const User = mongoose.model('User', userSchema);

@@ -18,6 +18,7 @@ const MONGO_URI =
     : ENV.mongoURI;
 
 // The server will start only if the connection to database is established
+mongoose.set('strictQuery', true);
 mongoose
   .connect(MONGO_URI, {
     // options for the connect method to parse the URI
