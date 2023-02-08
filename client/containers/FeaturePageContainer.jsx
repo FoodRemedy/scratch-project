@@ -4,6 +4,7 @@ import Table from '../components/Table';
 import DropDown from '../components/DropDown';
 import Cardlist from '../components/Cardlist';
 
+
 function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
   const [ailment, setAilment] = React.useState('headache');
@@ -96,7 +97,9 @@ function FeatureContainer(props) {
         dataProperties={tableProperties}
       />
       <Cardlist
-        
+        columns={tableHeaders}
+        rows={foodEntries}
+        dataProperties={tableProperties}
       />
     </>
   );

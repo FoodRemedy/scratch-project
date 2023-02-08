@@ -16,6 +16,7 @@ function Table(props) {
     // iterate over nutrients
   // add a cell for each nutrient
   // wrap quantity+unit in a td tag
+
   const tableBody = rows.map((row) => (
     <tr>
 
