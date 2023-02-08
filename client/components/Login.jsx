@@ -66,6 +66,7 @@ function Login(props) {
       .then((data) => {
         console.log('user created:', data);
         setSignUpError(false);
+        navigate('/signup')
       })
       .catch((err) => {
         setSignUpError(true);
@@ -109,20 +110,15 @@ function Login(props) {
   }
 
   return (
-    <div className='loginWrapper'>
-      <form onSubmit={handleSubmit} className='loginContainer'>
-        <h1>Food Remedy</h1>
-        <label htmlFor='username'>
-          <b>Username</b>
-          <input
-            id='username'
-            type='text'
-            onChange={handleChange}
-            placeholder='Enter Username'
-            name='username'
-            required
-          />
-        </label>
+    <div className="loginWrapper">
+     
+    
+    <form onSubmit={handleSubmit} className="loginContainer">
+      <h1>Food Remedy</h1>
+      <label htmlFor="username">
+        <b>Username</b>
+        <input id="username" type="text" onChange={handleChange} placeholder="Enter Username" name="username" required />
+      </label>
 
         <label htmlFor='password'>
           <b>Password</b>
@@ -136,9 +132,15 @@ function Login(props) {
           />
         </label>
 
-        <button type='submit' onClick={handleLogin}>
-          Login
-          {/* { <Link to={
+      <button
+        type="submit"
+        onClick={handleSignup}
+      >
+        Sign Up
+      </button>
+      <button type="submit" onClick={handleLogin}>
+        Login
+        {/* { <Link to={
           // if globalUser === '', link to the current page
           // otherwise, link to /feature
           globalUser ? {
@@ -150,16 +152,9 @@ function Login(props) {
         >
           Login
         </Link> } */}
-        </button>
-        <button type='submit' onClick={handleSignup}>
-          Sign Up
-        </button>
-        {loginError ? (
-          <span>Username or Password Incorrect</span>
-        ) : signUpError ? (
-          <span>Signup Failed, Invalid Input</span>
-        ) : null}
-      </form>
+      </button>
+
+    </form>
     </div>
   );
 }
