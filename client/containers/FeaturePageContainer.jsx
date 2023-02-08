@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import DropDown from '../components/DropDown';
+import Cardlist from '../components/Cardlist';
 
 function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
@@ -93,6 +94,9 @@ function FeatureContainer(props) {
         columns={tableHeaders}
         rows={foodEntries}
         dataProperties={tableProperties}
+      />
+      <Cardlist
+        
       />
     </>
   );

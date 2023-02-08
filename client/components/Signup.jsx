@@ -26,7 +26,7 @@ function Signup(props) {
       .then((res) => res.json())
       .then((data) => {
         console.log('user created:', data);
-        navigate('/feature');
+        navigate('/signup');
       })
       .catch((err) => console.log(err));
   };

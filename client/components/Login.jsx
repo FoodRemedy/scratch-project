@@ -61,8 +61,6 @@ function Login(props) {
 
   return (
     <div className="loginWrapper">
-     
-    
     <form onSubmit={handleSubmit} className="loginContainer">
       <h1>AlcheMeal</h1>
       <label htmlFor="username">
@@ -84,18 +82,6 @@ function Login(props) {
 
       <button type="submit" onClick={handleLogin}>
         Login
-        {/* { <Link to={
-          // if globalUser === '', link to the current page
-          // otherwise, link to /feature
-          globalUser ? {
-            pathname: '/feature',
-          } : {
-            pathname: '/',
-          }
-        }
-        >
-        Login
-      </Link> } */}
       </button>
       <button
         type="submit"

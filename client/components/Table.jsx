@@ -4,7 +4,6 @@ import React from 'react';
 function Table(props) {
   // Data
   const { columns, rows, dataProperties } = props;
-
   const tableHeaders = (
     <thead>
       <tr>
