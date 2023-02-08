@@ -41,19 +41,17 @@
 //   },
 // ];
 
-
-// const populateDB = () => {
-//   data.forEach((ailment) => {
-//     const chunk = JSON.stringify(ailment);
-//     Illness.create(chunk, (err, illness) => {
-//       if (err) {
-//         console.log(err);
-//       } else console.log(illness);
-//     });
-//   });
-// };
+const populateDB = () => {
+  data.forEach((ailment) => {
+    const chunk = JSON.stringify(ailment);
+    Illness.create(chunk, (err, illness) => {
+      if (err) {
+        console.log(err);
+      } else console.log(illness);
+    });
+  });
+};
 
 // // populateDB();
 
-
-// // ObjectParameterError: Parameter "obj" to Document() must be an object, got {"ailment":"headache","foods":["milk","yogurt","spinach","almonds","salmon"]}
+// ObjectParameterError: Parameter "obj" to Document() must be an object, got {"ailment":"headache","foods":["milk","yogurt","spinach","almonds","salmon"]}
