@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import DropDown from '../components/DropDown';
+import Cardlist from '../components/Cardlist';
+
 
 function FeatureContainer(props) {
   // const tableProperties = ['Insert', 'food', 'properties'];
@@ -81,7 +83,7 @@ function FeatureContainer(props) {
   return (
     <>
       <nav>
-        <h1>Food Remedy</h1>
+        <h1>AlcheMeal</h1>
         <div className='logoutContainer'>
           <p>{props.globalUser}</p>
           <button onClick={handleProfile} className='logout'>
@@ -99,6 +101,11 @@ function FeatureContainer(props) {
         ailment={ailment}
       />
       <Table
+        columns={tableHeaders}
+        rows={foodEntries}
+        dataProperties={tableProperties}
+      />
+      <Cardlist
         columns={tableHeaders}
         rows={foodEntries}
         dataProperties={tableProperties}
