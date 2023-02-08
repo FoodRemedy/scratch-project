@@ -52,6 +52,6 @@ const populateDB = () => {
   });
 };
 
-populateDB();
+// populateDB();
 
 // ObjectParameterError: Parameter "obj" to Document() must be an object, got {"ailment":"headache","foods":["milk","yogurt","spinach","almonds","salmon"]}
