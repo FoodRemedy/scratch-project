@@ -1,8 +1,9 @@
 const User = require('../models/userModel');
 const allergyController = {};
 
-  // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+  // Accepts an array of selections and adds them to the users allergy property
   allergyController.addAllergy = async (req, res, next) => {
+    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF ALLERGY
     console.log('inside the add allergy');
     const { username } = req.params;
     const { allergy } = req.body;
@@ -30,8 +31,9 @@ const allergyController = {};
     }
   };
   
-    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+  // Accepts an array of selections and adds them to the users allergy property
   allergyController.deleteAllergy = async (req, res, next) => {
+    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF ALLERGY
     console.log('inside the delete favorite');
     const { username } = req.params;
     const deleteAllergy  = req.body.allergy;
@@ -56,7 +58,7 @@ const allergyController = {};
     }
   };
 
-    // returns current allergies
+  // returns current allergies
   allergyController.getAllergy = async (req, res, next) => {
       console.log('inside the get allergy');
       const { username } = req.params;
@@ -74,7 +76,7 @@ const allergyController = {};
           message: { err: error.message },
         });
       }
-    };
+  };
   
   
 

@@ -101,6 +101,26 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
+// Retrieves a full user profile and returns it
+userController.getProfile = async (req, res, next) => {
+  const { username } = req.params;
+      try {
+        const profile = await User.findOne({ username });
+        if (!user) {
+          throw Error('user not found');
+        }
+    res.locals.profile = profile;
+    return next();
+    } 
+    catch (error) {
+      return next({
+        log: 'Error in userController.getProfile middleware function',
+        status: 500,
+        message: { err: error.message },
+      });
+    }
+}
+
 // Overwrites current profile preferences with new selections
 userController.updateProfile = async (req, res, next) => {
     const { username } = req.params;

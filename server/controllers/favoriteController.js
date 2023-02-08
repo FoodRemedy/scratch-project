@@ -1,9 +1,10 @@
 const User = require('../models/userModel');
 
 const favoriteController = {};
- 
-  // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+
+  // Accepts an array of selections and adds them to the users favorite property
   favoriteController.addFavorite = async (req, res, next) => {
+    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIE
     console.log('inside the add favorite');
     const { username } = req.params;
     const { favorite } = req.body;
@@ -31,8 +32,9 @@ const favoriteController = {};
     }
   };
   
-    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIES
+  // Accepts an array of selections and removes them from the users favorite property
   favoriteController.deleteFavorite = async (req, res, next) => {
+    // IT *MUST* RECIEVE AN ARRAY AS THE VALUE OF FAVORIE
     console.log('inside the delete favorite');
     const { username } = req.params;
     const deleteFavorite  = req.body.favorite;
