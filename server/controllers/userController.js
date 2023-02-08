@@ -1,51 +1,102 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const ENV = require('dotenv').config().parsed;
+const SALT_WORK_FACTOR = Number(ENV.SALT_WORK_FACTOR);
+
 const userController = {};
 
+// Writes a new a user to the database
 userController.createUser = async (req, res, next) => {
   const { username, password } = req.body;
 
-  try {
-    //check first to see if user is already created
-    const found = await User.findOne({ username });
-    if (found) {
-      console.log('yes user is created');
-      throw new Error('username is already in use');
-    }
-    const newUser = await new User({ username, password });
-    await newUser.save();
-    res.locals.user = newUser;
-    return next();
-  } catch (error) {
+  // Username type validation - must be type String between 6 and 30 characters inclusive
+  if (typeof username !== 'string' || username.length < 6 || username.length > 30) {
     return next({
-      log: 'Error in userController.createUser middleware function',
-      status: 500,
-      message: { err: error.message },
+      log: 'ERROR - userController.createUser: request body contains invalid username.',
+      status: 400,
+      message: { err: 'Username must be between 6 and 30 characters in length.' },
+    });
+  }
+
+  // Password type validation
+  if (typeof password !== 'string' || password.length < 8) {
+    return next({
+      log: 'ERROR - userController.createUser: request body contains invalid password.',
+      status: 400,
+      message: { err: 'Password must have a minimum of 8 characters.' },
+    });
+  }
+
+  try {
+    // Check if username already in use
+    const userMatch = await User.findOne({ username });
+    
+    if (userMatch !== null) {
+      return next({
+        log: 'ERROR - userController.createUser: request body contains username that is already in use.',
+        status: 400,
+        message: { err: 'Username is already in use.' },
+      });
+    }
+
+    // Hash password & write new user to database
+    const hashedPassword = await bcrypt.hash(password, SALT_WORK_FACTOR);
+    const user = await User.create({ username, password: hashedPassword });
+
+    res.locals.user = user;
+    return next();
+  } 
+  catch (err) {
+    return next({
+      log: `ERROR - userController.createUser: ${err}.`,
+      status: 400,
+      message: { err: 'Failed to create user. Check server log for details.' },
     });
   }
 };
 
+// Verify user credentials against database records
 userController.verifyUser = async (req, res, next) => {
   const { username, password } = req.body;
-  try {
-    //grab encrypted password from db
-    const user = await User.find({ username });
-    console.log(user);
-    if (!user[0]) {
-      console.log('no user found');
-      throw new Error('no user found');
-    }
-    const matched = await bcrypt.compare(password, user[0].password);
-    if (!matched) {
-      throw new Error('password incorrect');
-    }
-    res.locals.username = username;
-    return next();
-  } catch (error) {
+
+  // Username & password type validation - must be type String
+  if (typeof username !== 'string' || typeof password !== 'string') {
     return next({
-      log: 'Error in userController.verifyUser middleware function',
-      status: 500,
-      message: { err: error.message },
+      log: 'ERROR - userController.verifyUser: request body contains invalid type.',
+      status: 400,
+      message: { err: 'Failed to verify user. Check server log for details.' },
+    });
+  }
+
+  try {
+    // Check if username exists
+    const userMatch = await User.findOne({ username });
+    if (userMatch === null) {
+      return next({
+        log: `ERROR - userController.verifyUser: ${err}.`,
+        status: 400,
+        message: { err: 'Invalid username or password.' },
+      });
+    }
+
+    // Check if found user password matches provided password
+    const passwordMatch = await bcrypt.compare(password, userMatch.password);
+    if (passwordMatch === false) {
+      return next({
+        log: `ERROR - userController.verifyUser: ${err}.`,
+        status: 400,
+        message: { err: 'Invalid username or password.' },
+      });
+    }
+
+    res.locals.user = userMatch;
+    return next();
+  } 
+  catch (err) {
+    return next({
+      log: `ERROR - userController.verifyUser: ${err}.`,
+      status: 400,
+      message: { err: 'Failed to verify user. Check server log for details.' },
     });
   }
 };

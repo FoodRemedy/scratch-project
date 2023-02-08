@@ -1,0 +1,84 @@
+@import '_variables';
+
+// 1b. Login page
+
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  background-color: $lightestLime;
+  height: 100vh;
+}
+
+.loginContents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    margin-top: 100px;
+  }
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  justify-items: center;
+  border: 0.125rem solid $secondarySalmon;
+  border-radius: 5%;
+  width: 80rem;
+  height: 80rem;
+  box-shadow: 1rem 1.5rem 1.6rem 0rem rgb(128, 128, 128, 0.1);
+  background-color: white;
+  padding: 1rem;
+  // margin-top: 4rem;
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    justify-items: start;
+    font-size: 4rem;
+    max-width: 60rem;
+  }
+  h1 {
+    font-size: 9rem;
+  }
+  b {
+    min-width: 20rem;
+    text-align: center;
+  }
+  input {
+    align-self: center;
+    font-size: 4rem;
+    max-width: 50%;
+    min-height: 10rem;
+    text-align: start;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  button {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: start;
+    min-width: 25rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 1rem;
+    background-color: $primarySalmon;
+    color: white;
+    &:hover {
+      background-color: darken($primarySalmon, 10);
+    }
+  }
+  span {
+    color: red;
+    font-size: 3rem;
+  }
+}
