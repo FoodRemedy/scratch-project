@@ -8,6 +8,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const profileRouter = require('./routes/profileRouter');
+const oauthRouter = require('./routes/oauthRouter');
+
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
@@ -52,6 +54,9 @@ app.get('/verify', cookieController.verifySessionCookie, (req, res) => {
 app.delete('/logout', cookieController.removeSessionCookie, (req, res) => {
   return res.sendStatus(200);
 });
+
+// Route for OAuth authentication
+app.use('/oauth', oauthRouter);
 
 // Route to fetch results for selected illness
 app.post(

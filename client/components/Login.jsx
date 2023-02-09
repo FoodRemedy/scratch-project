@@ -77,6 +77,12 @@ function Login(props) {
       });
   };
 
+  const handleGoogleSignIn = () => {
+    fetch('/oauth/google/redirect')
+      .then((res) => res.json())
+      .then((data) => (window.location.href = data.redirect));
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
     e.target.reset();
@@ -114,6 +120,7 @@ function Login(props) {
           LOGIN
         </button>
         {loginError ? <span>Username or Password Incorrect</span> : null}
+        <button onClick={handleGoogleSignIn}>hey it's me, google</button>
         <hr></hr>
         <p>
           <b>Don't have an account?</b>
