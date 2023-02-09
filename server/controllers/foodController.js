@@ -1,6 +1,7 @@
 const Illness = require('../models/illnessModels');
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const foodController = {};
 
@@ -10,7 +11,8 @@ const foodController = {};
 
 // const app_key = 'b23cc3a2748cbdbbc9893ef62a4fffd0';
 
-const preciseURL = 'https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20';
+const preciseURL =
+  'https://api.edamam.com/api/nutrition-data?app_id=39a9d9d4&app_key=089c8440b2425e91bc5ea8bd935b132e&nutrition-type=cooking&ingr=1%20ounce%20';
 
 // gets
 foodController.getFoods = (req, res, next) => {
@@ -19,7 +21,7 @@ foodController.getFoods = (req, res, next) => {
   try {
     Illness.findOne({ ailment: req.body.ailment }).then((data) => {
       res.locals.foods = data.foods;
-      console.log('this is data', res.locals.foods)
+      console.log('this is data', res.locals.foods);
       return next();
     });
   } catch (error) {
@@ -62,7 +64,7 @@ foodController.getFacts = async (req, res, next) => {
         const newURL = preciseURL + food;
         const response = await fetch(newURL);
         return response.json();
-      }),
+      })
     );
     res.locals.facts = facts;
     console.log('length', res.locals.facts.length);
