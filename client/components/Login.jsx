@@ -110,18 +110,29 @@ function Login(props) {
           />
         </label>
 
-        <button type='submit' onClick={handleLogin}>
-          LOGIN
-        </button>
-        {loginError ? <span>Username or Password Incorrect</span> : null}
-        <hr></hr>
-        <p>
-          <b>Don't have an account?</b>
-        </p>
-        <button type='submit' onClick={handleSignup}>
-          Sign Up With Alchemeal
-        </button>
-      </form>
+      <button
+        type="submit"
+        onClick={handleSignup}
+      >
+        Sign Up
+      </button>
+      <button type="submit" onClick={handleLogin}>
+        Login
+        {/* { <Link to={
+          // if globalUser === '', link to the current page
+          // otherwise, link to /feature
+          globalUser ? {
+            pathname: '/feature',
+          } : {
+            pathname: '/',
+          }
+          }
+        >
+          Login
+        </Link> } */}
+      </button>
+
+    </form>
     </div>
   );
 }
