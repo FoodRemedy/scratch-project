@@ -2,17 +2,17 @@
 
 // 1b. Login page
 
-.loginWrapper {
+.profileWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   justify-items: center;
   align-items: center;
   background-color: $lightestLime;
-  height: 90vh;
+  height: 100vh;
 }
 
-.loginContents {
+.profileContents {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,7 +23,7 @@
   }
 }
 
-.loginContainer {
+.profileContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -96,6 +96,7 @@
   button {
     transform: translate(-4rem, 0);
   }
+  .update,
   .signup,
   .login {
     transform: translate(0, 0);
