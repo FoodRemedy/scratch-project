@@ -21,9 +21,10 @@ router.get(
   oauthController.authenticateGoogleUser,
   cookieController.setSessionCookie,
   (req, res) => {
-    if (process.process.env.NODE_process.env === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       return res.status(302).redirect('/');
     }
+
     return res
       .status(302)
       .redirect(`http://localhost:${process.env.REACT_DEV_PORT}`);
