@@ -85,7 +85,7 @@ export default function TextBox(props) {
           // inputProps={{
           //   style: { fontSize: '3rem' },
           // }}
-          // value={values.textformat}
+          value={props.value}
           type={props.type ? props.type : 'text'}
           name='textformat'
           placeholder={props.placeholder}
