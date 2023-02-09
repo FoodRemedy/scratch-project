@@ -19,8 +19,15 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Deliver static files
-app.use(express.static(path.resolve(__dirname, '../client')));
+// Production static file delivery
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, '../public')));
+  app.get('/', (req, res) =>
+    res
+      .status(200)
+      .sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
+  );
+}
 
 // Route to create new user
 app.post(
@@ -72,8 +79,8 @@ app.post(
 app.use('/profile', profileRouter);
 
 // Catch all route
-app.use('/', (req, res) => {
-  return res.status(404).json({ err: 'Not found.' });
+app.use('/*', (req, res) => {
+  return res.status(404).send('404: Not found :(');
 });
 
 // Global error handler
