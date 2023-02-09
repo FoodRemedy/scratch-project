@@ -19,13 +19,13 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Production file and static content delivery
+// Production static file delivery
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, '../client')));
+  app.use(express.static(path.resolve(__dirname, '../public')));
   app.get('/', (req, res) =>
     res
       .status(200)
-      .sendFile(path.resolve(__dirname, '..', 'client', 'index.html'))
+      .sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
   );
 }
 
@@ -77,8 +77,6 @@ app.post(
 
 // Route to profile endpoint
 app.use('/profile', profileRouter);
-
-app.use();
 
 // Catch all route
 app.use('/*', (req, res) => {

@@ -69,9 +69,8 @@ oauthController.authenticateGoogleUser = async (req, res, next) => {
       const newUser = await User.create({
         username: email,
         password: `Google OAuth: ${id}`,
-        firstname: given_name,
-        lastname,
-        family_name,
+        firstName: given_name,
+        lastName: family_name,
       });
       res.locals.user = newUser;
       return next();
