@@ -26,9 +26,6 @@ function Profile(props) {
     }
   }, [isLoggedIn]);
 
-  // send JSON file to the server
-
-  // get from server
   useEffect(() => {
     if (isLoggedIn) {
       fetch('/profile/all/' + globalUser)
@@ -38,19 +35,19 @@ function Profile(props) {
           setLastName(data.lastName);
           setAllergy(data.allergy);
           setDiet(data.diet);
+          console.log(data.firstName);
         })
         .catch((err) => console.log(err));
     }
-  }, []);
-  // }
+  }, [isLoggedIn]);
 
   const setProfileSettings = () => {
     // update profile
     fetch('/profile/all/' + globalUser, {
       method: 'PATCH',
       body: JSON.stringify({
-        firstName,
-        lastName,
+        firstName: firstName,
+        lastName: lastName,
         allergy,
         diet,
       }),
@@ -163,6 +160,7 @@ function Profile(props) {
           label='First Name'
           name='firstName'
           required={false}
+          value={firstName}
           onChange={handleFirstName}
         />
         <TextBox
@@ -172,6 +170,7 @@ function Profile(props) {
           label='Last Name'
           name='lastName'
           required={false}
+          value={lastName}
           onChange={handleLastName}
         />
         <h2>Allergies</h2>
@@ -186,6 +185,7 @@ function Profile(props) {
           }}
           id='allergy'
           options={allergies}
+          value={allergy}
           onChange={handleChangeAllergy}
         />
         <h2>Diet</h2>
@@ -199,6 +199,7 @@ function Profile(props) {
             }),
           }}
           options={dietaryRestrictions}
+          value={diet}
           onChange={handleChangeDiet}
         />
         <button className='signup' onClick={handleProfile} type='submit'>
