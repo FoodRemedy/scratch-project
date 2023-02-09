@@ -60,10 +60,9 @@ app.post(
   foodController.getFoods,
   foodController.getFacts,
   foodController.filterAllergy, 
-  // foodController.filterDiet,
+  foodController.filterDiet,
   (req, res) => {
     console.log("you  made it babbeee, this shits filtered!")
-    console.log('foods', res.locals.foods)
     return res.status(200).send(res.locals.facts);
   }
 );
