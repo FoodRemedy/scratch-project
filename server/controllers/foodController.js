@@ -13,7 +13,7 @@ foodController.getFoods = (req, res, next) => {
   try {
     Illness.findOne({ ailment: req.body.ailment }).then((data) => {
       res.locals.foods = data.foods;
-      console.log('this is data', res.locals.foods)
+      // console.log('this is data', res.locals.foods)
       return next();
     });
   } catch (error) {
@@ -27,6 +27,7 @@ foodController.getFoods = (req, res, next) => {
 
 foodController.getFacts = async (req, res, next) => {
   console.log('inside of getFacts in food controller');
+
   try {
     const facts = await Promise.all(
       res.locals.foods.map(async (food) => {
@@ -36,7 +37,8 @@ foodController.getFacts = async (req, res, next) => {
       }),
     );
     res.locals.facts = facts;
-    // console.log(facts)
+
+    console.log(facts)
     // console.log('length', res.locals.facts.length);
     return next();
   } catch (error) {

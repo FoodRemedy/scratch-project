@@ -13,6 +13,7 @@ const oauthRouter = require('./routes/oauthRouter');
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
+const cacheController = require('./controllers/cacheController');
 
 // Enable CORS for all origins, parse JSON payloads, parse cookies
 app.use(cors({ origin: true, credentials: true }));
