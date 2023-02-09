@@ -161,10 +161,11 @@ function Login(props) {
           </div>
           <button className='signup' type='submit' onClick={handleSignup}>
             SIGN UP
-        </button>
-        <button onClick={handleGoogleSignIn}>hey it's me, google</button>
-      </form>
-    </div>
-  );
+          </button>
+          <button onClick={handleGoogleSignIn}>hey it's me, google</button>
+        </form>
+      </div>
+    );
+  }
 }
 export default Login;
