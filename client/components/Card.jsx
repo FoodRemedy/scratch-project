@@ -10,11 +10,11 @@ function Card(props) {
   const [imgSRC, setImgSRC] = useState(null);
 
   useEffect(() => {
-    if (!imgSRC) {
-      const parsedName = name.split(' ').at(-1);
-      getImageFromAPI(parsedName);
-    }
-  }, [props]);
+    // if (!imgSRC) {
+    const parsedName = name.split(' ').at(-1);
+    getImageFromAPI(parsedName);
+    // }
+  }, [name]);
 
   const getImageFromAPI = (name) => {
     searchImages(AUTH_KEY, name)
