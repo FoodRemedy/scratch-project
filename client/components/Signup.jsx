@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setIsLoggedIn, setGlobalUser } from '../slices';
 
 function Signup(props) {
-  const { appPage } = props;
+  const { appPage, oAuth, oAuthHandler } = props;
   const [signUpError, setSignUpError] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -87,6 +87,8 @@ function Signup(props) {
           appPage={appPage}
           onSignUp={handleSignup}
           signUpError={signUpError}
+          oAuth={oAuth}
+          oAuthHandler={oAuthHandler}
         />
       </form>
     </div>

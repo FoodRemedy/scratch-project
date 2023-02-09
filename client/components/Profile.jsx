@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setAppPage } from '../slices';
 
 function Profile(props) {
-  const { appPage, signUpError, userName, onSignUp } = props;
+  const { appPage, signUpError, userName, onSignUp, oAuth, oAuthHandler } =
+    props;
   const isLoggedIn = useSelector((state) => state.control.isLoggedIn);
 
   // adding properties to state
@@ -133,11 +134,16 @@ function Profile(props) {
 
   const editProfileRender = (input) => {
     return (
-      <div>
-        <h1>Edit My Profile</h1>
-        <form onSubmit={handleSubmit} className='loginContainer'>
+      <div className='profileWrapper'>
+        <form onSubmit={handleSubmit} className='profileContainer'>
+          <h1>Edit My Profile</h1>
           {input}
-          <button onClick={handleExit}>Home Page</button>
+          <div className='section-div'>
+            <span className='divider'></span>
+          </div>
+          <button className='back' onClick={handleExit}>
+            CANCEL
+          </button>
         </form>
       </div>
     );
@@ -194,6 +200,19 @@ function Profile(props) {
         <button className='signup' onClick={handleProfile} type='submit'>
           {isLoggedIn ? 'UPDATE' : 'SIGN UP'}
         </button>
+        {oAuth ? (
+          <div class='google-btn' onClick={oAuthHandler}>
+            <div class='google-icon-wrapper'>
+              <img
+                class='google-icon-svg'
+                src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
+              />
+            </div>
+            <p class='btn-text'>
+              <b>Sign up with Google</b>
+            </p>
+          </div>
+        ) : null}
       </tb>
     </div>
   );

@@ -3,14 +3,13 @@ import { useDispatch } from 'react-redux';
 import { setAppPage, setGlobalUser, setIsLoggedIn } from '../slices';
 import TextBox from './TextBox';
 import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
 
 function Login(props) {
-  const { appPage, isSignUp, handleUser, handlePassword } = props;
+  const { appPage, isSignUp, handleUser, handlePassword, oAuth, oAuthHandler } =
+    props;
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
@@ -94,12 +93,6 @@ function Login(props) {
       });
   };
 
-  const handleGoogleSignIn = () => {
-    fetch('/oauth/google/redirect')
-      .then((res) => res.json())
-      .then((data) => (window.location.href = data.redirect));
-  };
-
   function handleSubmit(e) {
     e.preventDefault();
     e.target.reset();
@@ -151,6 +144,16 @@ function Login(props) {
           <button className='login' type='submit' onClick={handleLogin}>
             LOGIN
           </button>
+
+          {oAuth ? (
+            <>
+              <button class='google-auth' onClick={oAuthHandler}>
+                <img
+                  src={require('../images/btn_google_signin_dark_normal_web@2x.png')}
+                />
+              </button>
+            </>
+          ) : null}
           {loginError ? (
             <span style={{ color: 'red' }}>Username or Password Incorrect</span>
           ) : (
@@ -162,7 +165,6 @@ function Login(props) {
           <button className='signup' type='submit' onClick={handleSignup}>
             SIGN UP
           </button>
-          <button onClick={handleGoogleSignIn}>hey it's me, google</button>
         </form>
       </div>
     );

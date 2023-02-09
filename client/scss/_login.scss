@@ -116,4 +116,10 @@
       background-color: darken($primarySalmon, 10);
     }
   }
+  .google-auth {
+    transform: translate(0, 0);
+    min-width: 25rem;
+    background-image: require('../');
+    margin-bottom: 3rem;
+  }
 }
