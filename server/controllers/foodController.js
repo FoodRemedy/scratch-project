@@ -30,19 +30,6 @@ foodController.getFoods = (req, res, next) => {
   }
 };
 
-foodController.filterFoods = (req, res, next) => {
-
-//  Iterate through response object (array of objects)
-// For each object, filter only ones that include the VALUE of diet and VALUE of allergy
-// (These are good to gos)
-
-// Update res.locals.food with new slimed down array
-// res.locals.badAllergyFood
-// res.locals.badDietFood
-// Res.locals.blacklistFood
-};
-
-
 foodController.getFacts = async (req, res, next) => {
   console.log('inside of getFacts in food controller');
   try {
@@ -54,8 +41,8 @@ foodController.getFacts = async (req, res, next) => {
       }),
     );
     res.locals.facts = facts;
-    console.log(facts)
-    console.log('length', res.locals.facts.length);
+    // console.log(facts)
+    // console.log('length', res.locals.facts.length);
     return next();
   } catch (error) {
     console.log(error);
@@ -67,29 +54,53 @@ foodController.getFacts = async (req, res, next) => {
   }
 };
 
+foodController.filterFoods = async(req, res, next) => {
+  const foods = res.locals.foods
+  const facts = res.locals.facts
+//hard coding user for testing:
+const profile = {
+  "allergy": [
+      "gluten",
+      "lupine",
+      "soy"
+  ],
+  "diet": [
+      "vegan"
+  ],
+}
+//   const { foods, facts } = res.lcoals; // will also include user profile
+  const goodFood = [];
+  const goodFacts = [];
+  const badFood = {};
+    for (let i = 0; i < facts.length; i++){
+      let labels = facts[i].healthLabels;
+      profile.allergy.forEach((allergy) => {
+        console.log(allergy.toUpperCase + '_FREE')
+        if (labels[i] !== allergy.toUpperCase() + '_FREE') badFood[foods[i]] = allergy;
+        else {
+          goodFood.push(foods[i]);
+          goodFacts.push(facts[i]);
+        };
+      });
+      res.locals.food = goodFood;
+      res.locals.facts = goodFacts;
+      res.locals.filteredFood = badFood;
+      // console.log('good foods: ', badFood)
+    }
+    return next();
+};
 
-// foodController.getFacts = async (req, res, next) => {
-//   console.log('hitting get facts');
-//   res.locals.facts = [];
-//   try {
-//     for (const food of res.locals.foods) {
-//       const newURL = preciseURL + food;
-//       const response = await fetch(newURL);
-//       const data = await response.json();
-//       res.locals.facts.push(data);
-//     }
-//     console.log('length', res.locals.facts.length);
-//     return next();
-//   } catch (error) {
-//     console.log(error);
-//     // error
-//     return next({
-//       log: 'Express error handler caught getFacts handler',
-//       status: 500,
-//       message: error,
-//     });
+// router.post(
+//   '/search/:username',
+//   userController.getProfile,
+//   foodController.getFoods,
+//   foodController.getFacts,
+//   foodController.filterFoods,
+//   (req, res) => {
+//     return res.status(200).send(res.locals.facts);
 //   }
-// };
+// );
+
 
 module.exports = foodController;
 
