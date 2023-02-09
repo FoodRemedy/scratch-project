@@ -62,7 +62,7 @@ app.post(
   foodController.filterAllergy, 
   // foodController.filterDiet,
   (req, res) => {
-    console.log("you  made it babbeee through the fetch for foods")
+    console.log("you  made it babbeee, this shits filtered!")
     console.log('foods', res.locals.foods)
     return res.status(200).send(res.locals.facts);
   }
