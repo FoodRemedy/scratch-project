@@ -60,7 +60,7 @@ function FeatureContainer(props) {
 
   const handleClick = () => {
     console.log('ailment', ailment);
-    fetch('/search', {
+    fetch('/search/', {
       method: 'POST',
       body: JSON.stringify({ ailment }),
       headers: { 'Content-Type': 'application/json' },

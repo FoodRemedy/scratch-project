@@ -54,53 +54,47 @@ foodController.getFacts = async (req, res, next) => {
   }
 };
 
-foodController.filterFoods = async(req, res, next) => {
+foodController.filterAllergy = async(req, res, next) => {
+
+  console.log('inside of filter foods')
   const foods = res.locals.foods
   const facts = res.locals.facts
-//hard coding user for testing:
-const profile = {
-  "allergy": [
-      "gluten",
-      "lupine",
-      "soy"
-  ],
-  "diet": [
-      "vegan"
-  ],
-}
-//   const { foods, facts } = res.lcoals; // will also include user profile
-  const goodFood = [];
-  const goodFacts = [];
-  const badFood = {};
-    for (let i = 0; i < facts.length; i++){
-      let labels = facts[i].healthLabels;
-      profile.allergy.forEach((allergy) => {
-        console.log(allergy.toUpperCase + '_FREE')
-        if (labels[i] !== allergy.toUpperCase() + '_FREE') badFood[foods[i]] = allergy;
-        else {
-          goodFood.push(foods[i]);
-          goodFacts.push(facts[i]);
-        };
-      });
-      res.locals.food = goodFood;
+  const user = res.locals.profile
+
+  const goodFood = new Set();
+  const goodFacts = new Set();
+    if (user.allergy.length > 0){
+   
+      for (let i = 0; i < facts.length; i++){
+        let labels = facts[i].healthLabels;
+        user.allergy.forEach((allergy) => {
+          if (labels.includes(allergy.toUpperCase() + '_FREE')) {
+            // console.log(foods[i], allergy)
+            goodFood.add(foods[i]);
+            goodFacts.add(facts[i]);
+          }
+        });
+      }
+      res.locals.foods = goodFood;
       res.locals.facts = goodFacts;
-      res.locals.filteredFood = badFood;
-      // console.log('good foods: ', badFood)
     }
     return next();
 };
 
-// router.post(
-//   '/search/:username',
-//   userController.getProfile,
-//   foodController.getFoods,
-//   foodController.getFacts,
-//   foodController.filterFoods,
-//   (req, res) => {
-//     return res.status(200).send(res.locals.facts);
-//   }
-// );
+// foodController.filterDiet = async(req, res, next) => {
 
+//   console.log('inside of filter diet')
+//   const foods = res.locals.foods
+//   const facts = res.locals.facts
+//   const diet = res.locals.profile.diet
+
+//   if (diet.length > 0){
+//     // iterate through facts
+//       // facts[]
+//   }
+   
+//     return next();
+// };
 
 module.exports = foodController;
 

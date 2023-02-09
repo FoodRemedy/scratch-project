@@ -55,13 +55,15 @@ app.delete('/logout', cookieController.removeSessionCookie, (req, res) => {
 
 // Route to fetch results for selected illness
 app.post(
-  '/search',
+  '/search/:username',
+  userController.getProfile,
   foodController.getFoods,
   foodController.getFacts,
-
-  foodController.filterFoods, // testing this
-
+  foodController.filterAllergy, 
+  // foodController.filterDiet,
   (req, res) => {
+    console.log("you  made it babbeee through the fetch for foods")
+    console.log('foods', res.locals.foods)
     return res.status(200).send(res.locals.facts);
   }
 );
