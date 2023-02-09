@@ -1,20 +1,13 @@
 const Illness = require('../models/illnessModels');
+const ENV = require('dotenv').config().parsed;
 
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const foodController = {};
 
-// const accessPoint = 'https://api.edamam.com/api/nutrition-data';
+const preciseURL = process.env.PRECISE_URL;
 
-// const app_id = 'c3e5b6ff';
-
-// const app_key = 'b23cc3a2748cbdbbc9893ef62a4fffd0';
-
-const preciseURL =
-  'https://api.edamam.com/api/nutrition-data?app_id=39a9d9d4&app_key=089c8440b2425e91bc5ea8bd935b132e&nutrition-type=cooking&ingr=1%20ounce%20';
-
-// gets
 foodController.getFoods = (req, res, next) => {
   // queries mongoDB for illness, saves related foods in res locals
   console.log('hitting get foods');
@@ -33,29 +26,6 @@ foodController.getFoods = (req, res, next) => {
   }
 };
 
-// foodController.getFacts = async (req, res, next) => {
-//   console.log('hitting get facts');
-//   res.locals.facts = [];
-//   try {
-//     for (const food of res.locals.foods) {
-//       const newURL = preciseURL + food;
-//       const response = await fetch(newURL);
-//       const data = await response.json();
-//       res.locals.facts.push(data);
-//     }
-//     console.log('length', res.locals.facts.length);
-//     return next();
-//   } catch (error) {
-//     console.log(error);
-//     // error
-//     return next({
-//       log: 'Express error handler caught getFacts handler',
-//       status: 500,
-//       message: error,
-//     });
-//   }
-// };
-
 foodController.getFacts = async (req, res, next) => {
   console.log('inside of getFacts in food controller');
   try {
@@ -67,7 +37,8 @@ foodController.getFacts = async (req, res, next) => {
       })
     );
     res.locals.facts = facts;
-    console.log('length', res.locals.facts.length);
+    // console.log(facts)
+    // console.log('length', res.locals.facts.length);
     return next();
   } catch (error) {
     console.log(error);
@@ -80,5 +51,3 @@ foodController.getFacts = async (req, res, next) => {
 };
 
 module.exports = foodController;
-
-// https://api.edamam.com/api/nutrition-data?app_id=c3e5b6ff&app_key=b23cc3a2748cbdbbc9893ef62a4fffd0&nutrition-type=cooking&ingr=1%20ounce%20banana

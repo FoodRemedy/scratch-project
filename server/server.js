@@ -65,7 +65,21 @@ app.delete('/logout', cookieController.removeSessionCookie, (req, res) => {
 // Route for OAuth authentication
 app.use('/oauth', oauthRouter);
 
-// Route to fetch results for selected illness
+// Route to fetch results for selected illness for a user
+app.post(
+  '/search/:username',
+  userController.getProfile,
+  foodController.getFoods,
+  foodController.getFacts,
+  foodController.filterAllergy, 
+  foodController.filterDiet,
+  (req, res) => {
+    console.log("you  made it babbeee, this shits filtered!")
+    return res.status(200).send(res.locals.facts);
+  }
+);
+
+// OLD Route to fetch results for selected illness (not user filtering)
 app.post(
   '/search',
   foodController.getFoods,

@@ -112,11 +112,11 @@ userController.getProfile = async (req, res, next) => {
     if (!profile) {
       throw Error('user not found');
     }
-    const { firstname, lastname, allergy, diet, favorite, blacklist } = profile;
+    const { firstName, lastName, allergy, diet, favorite, blacklist } = profile;
 
     res.locals.profile = {
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       allergy,
       diet,
       favorite,
