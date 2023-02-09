@@ -7,10 +7,14 @@ nav {
   display: flex;
   height: 10rem;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid $secondarySalmon;
   h1 {
+    color: lighten(rgb(59, 20, 59), 20);
+    font-family: Carnet-de-voyage;
     padding: 0.5rem;
-    font-size: 4rem;
+    font-size: 5rem;
+    font-weight: 200;
   }
   .logoutContainer {
     display: flex;
