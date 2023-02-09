@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import TextBox from './TextBox';
 import makeAnimated from 'react-select/animated';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAppPage, setGlobalUser, setIsLoggedIn } from '../slices';
+import { setAppPage } from '../slices';
 
 function Profile(props) {
-  const { appPage, signUpError, userName, onSignUp } = props;
+  const { appPage, signUpError, userName, onSignUp, oAuth, oAuthHandler } =
+    props;
   const isLoggedIn = useSelector((state) => state.control.isLoggedIn);
 
   // adding properties to state
@@ -90,10 +92,12 @@ function Profile(props) {
     { value: 'none', label: 'None' },
   ];
 
-  const handleChangeNames = (event) => {
-    console.log('Option selected:', event.target.id);
-    if (event.target.id === 'firstName') setFirstName(event.target.value);
-    if (event.target.id === 'lastName') setLastName(event.target.value);
+  const handleFirstName = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleLastName = (event) => {
+    setLastName(event.target.value);
   };
 
   const handleChangeAllergy = (selectedOption) => {
@@ -117,20 +121,29 @@ function Profile(props) {
 
   const signUpRender = (input) => {
     return (
-      <div>
+      <tb>
         {input}
-        {signUpError ? <span>Signup Failed, Invalid Input</span> : null}
-      </div>
+        {signUpError ? (
+          <span>Signup Failed, Invalid Input</span>
+        ) : (
+          <span style={{ color: 'white' }}>''</span>
+        )}
+      </tb>
     );
   };
 
   const editProfileRender = (input) => {
     return (
-      <div>
-        <h1>Edit My Profile</h1>
-        <form onSubmit={handleSubmit} className='loginContainer'>
+      <div className='profileWrapper'>
+        <form onSubmit={handleSubmit} className='profileContainer'>
+          <h1>Edit My Profile</h1>
           {input}
-          <button onClick={handleExit}>Home Page</button>
+          <div className='section-div'>
+            <span className='divider'></span>
+          </div>
+          <button className='back' onClick={handleExit}>
+            CANCEL
+          </button>
         </form>
       </div>
     );
@@ -138,20 +151,28 @@ function Profile(props) {
 
   const renderSettings = (
     <div>
-      <div>
-        <label>
-          <b>First Name:</b>
-          <input id='firstName' type='text' onChange={handleChangeNames} />
-        </label>
-        <br />
-        <label>
-          <b>Last Name:</b>
-          <input id='lastName' type='text' onChange={handleChangeNames} />
-        </label>
-      </div>
-      <div>
-        <h2>My Allergies</h2>
+      <tb>
+        <TextBox
+          id='firstName'
+          className='TextBox'
+          labelClass='label'
+          label='First Name'
+          name='firstName'
+          required={false}
+          onChange={handleFirstName}
+        />
+        <TextBox
+          id='lastName'
+          className='TextBox'
+          labelClass='label'
+          label='Last Name'
+          name='lastName'
+          required={false}
+          onChange={handleLastName}
+        />
+        <h2>Allergies</h2>
         <Select
+          className='select'
           isMulti
           styles={{
             control: (baseStyles, state) => ({
@@ -163,10 +184,9 @@ function Profile(props) {
           options={allergies}
           onChange={handleChangeAllergy}
         />
-      </div>
-      <div>
-        <h2>My Diet</h2>
+        <h2>Diet</h2>
         <Select
+          className='select'
           isMulti
           styles={{
             control: (baseStyles, state) => ({
@@ -177,10 +197,23 @@ function Profile(props) {
           options={dietaryRestrictions}
           onChange={handleChangeDiet}
         />
-      </div>
-      <button onClick={handleProfile} type='submit'>
-        {isLoggedIn ? 'Update Profile' : 'Sign Up'}
-      </button>
+        <button className='signup' onClick={handleProfile} type='submit'>
+          {isLoggedIn ? 'UPDATE' : 'SIGN UP'}
+        </button>
+        {oAuth ? (
+          <div class='google-btn' onClick={oAuthHandler}>
+            <div class='google-icon-wrapper'>
+              <img
+                class='google-icon-svg'
+                src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
+              />
+            </div>
+            <p class='btn-text'>
+              <b>Sign up with Google</b>
+            </p>
+          </div>
+        ) : null}
+      </tb>
     </div>
   );
 
