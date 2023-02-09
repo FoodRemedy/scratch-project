@@ -77,6 +77,12 @@ function Login(props) {
       });
   };
 
+  const handleGoogleSignIn = () => {
+    fetch('/oauth/google/redirect')
+      .then((res) => res.json())
+      .then((data) => (window.location.href = data.redirect));
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
     e.target.reset();
@@ -110,15 +116,12 @@ function Login(props) {
           />
         </label>
 
-      <button
-        type="submit"
-        onClick={handleSignup}
-      >
-        Sign Up
-      </button>
-      <button type="submit" onClick={handleLogin}>
-        Login
-        {/* { <Link to={
+        <button type='submit' onClick={handleSignup}>
+          Sign Up
+        </button>
+        <button type='submit' onClick={handleLogin}>
+          Login
+          {/* { <Link to={
           // if globalUser === '', link to the current page
           // otherwise, link to /feature
           globalUser ? {
@@ -130,9 +133,9 @@ function Login(props) {
         >
           Login
         </Link> } */}
-      </button>
-
-    </form>
+        </button>
+        <button onClick={handleGoogleSignIn}>hey it's me, google</button>
+      </form>
     </div>
   );
 }
