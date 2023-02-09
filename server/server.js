@@ -67,10 +67,14 @@ app.use('/oauth', oauthRouter);
 
 // Route to fetch results for selected illness
 app.post(
-  '/search',
+  '/search/:username',
+  userController.getProfile,
   foodController.getFoods,
   foodController.getFacts,
+  foodController.filterAllergy, 
+  foodController.filterDiet,
   (req, res) => {
+    console.log("you  made it babbeee, this shits filtered!")
     return res.status(200).send(res.locals.facts);
   }
 );
