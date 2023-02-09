@@ -13,6 +13,7 @@ foodController.getFoods = (req, res, next) => {
   try {
     Illness.findOne({ ailment: req.body.ailment }).then((data) => {
       res.locals.foods = data.foods;
+      console.log('this is data', res.locals.foods)
       return next();
     });
   } catch (error) {
