@@ -9,7 +9,7 @@ function Profile(props) {
   const { appPage, signUpError, userName, onSignUp, oAuth, oAuthHandler } =
     props;
   const isLoggedIn = useSelector((state) => state.control.isLoggedIn);
-
+  const globalUser = useSelector((state) => state.control.globalUser);
   // adding properties to state
   // const [signUpSuccess, setSignUpSuccess] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -20,34 +20,34 @@ function Profile(props) {
 
   useEffect(() => {
     if (isLoggedIn && appPage !== '/profile') {
-      console.log('update Proile of ...', userName);
+      console.log('update Proile of ...', globalUser);
       // setProfileSettings(); //TBD ROUTE NEEDED...
       dispatch(setAppPage('/feature')); //REMOVE THIS ONCE ROUTE IS ADDED!
     }
   }, [isLoggedIn]);
 
-  // send JSON file to the server
-  // if (!isLoggedIn) { // get from server
-  //   useEffect(() => {
-  //     fetch('http://localhost:3000/profile/:username')
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setFirstName(data.firstName);
-  //         setLastName(data.lastName);
-  //         setAllergy(data.allergy);
-  //         setDiet(data.diet);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }, []);
-  // }
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetch('/profile/all/' + globalUser)
+        .then((res) => res.json())
+        .then((data) => {
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
+          setAllergy(data.allergy);
+          setDiet(data.diet);
+          console.log(data.firstName);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   const setProfileSettings = () => {
     // update profile
-    fetch('/profile/' + userName, {
-      method: 'POST',
+    fetch('/profile/all/' + globalUser, {
+      method: 'PATCH',
       body: JSON.stringify({
-        firstName,
-        lastName,
+        firstName: firstName,
+        lastName: lastName,
         allergy,
         diet,
       }),
@@ -82,6 +82,7 @@ function Profile(props) {
     { value: 'soy', label: 'Soy' },
     { value: 'shellfish', label: 'Shellfish' },
     { value: 'lupine', label: 'Lupine' },
+    { value: 'none', label: 'None' },
   ];
 
   const dietaryRestrictions = [
@@ -159,6 +160,7 @@ function Profile(props) {
           label='First Name'
           name='firstName'
           required={false}
+          value={firstName}
           onChange={handleFirstName}
         />
         <TextBox
@@ -168,6 +170,7 @@ function Profile(props) {
           label='Last Name'
           name='lastName'
           required={false}
+          value={lastName}
           onChange={handleLastName}
         />
         <h2>Allergies</h2>
@@ -182,6 +185,7 @@ function Profile(props) {
           }}
           id='allergy'
           options={allergies}
+          value={allergy}
           onChange={handleChangeAllergy}
         />
         <h2>Diet</h2>
@@ -195,6 +199,7 @@ function Profile(props) {
             }),
           }}
           options={dietaryRestrictions}
+          value={diet}
           onChange={handleChangeDiet}
         />
         <button className='signup' onClick={handleProfile} type='submit'>
