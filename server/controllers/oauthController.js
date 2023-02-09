@@ -57,16 +57,22 @@ oauthController.getGoogleUser = async (req, res, next) => {
 
 // Verify or create Googler user
 oauthController.authenticateGoogleUser = async (req, res, next) => {
-  const { id, email } = res.locals.googleUser;
+  const { id, email, given_name, family_name } = res.locals.googleUser;
 
   try {
-    const userMatch = await User.findOne({ username: email, password: id });
+    const userMatch = await User.findOne({ username: email });
 
     if (userMatch) {
       res.locals.user = userMatch;
       return next();
     } else {
-      const newUser = await User.create({ username: email, password: id });
+      const newUser = await User.create({
+        username: email,
+        password: `Google OAuth: ${id}`,
+        firstname: given_name,
+        lastname,
+        family_name,
+      });
       res.locals.user = newUser;
       return next();
     }
