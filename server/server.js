@@ -13,7 +13,6 @@ const oauthRouter = require('./routes/oauthRouter');
 const foodController = require('./controllers/foodController');
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
-const cacheController = require('./controllers/cacheController');
 
 // Enable CORS for all origins, parse JSON payloads, parse cookies
 app.use(cors({ origin: true, credentials: true }));
@@ -72,10 +71,10 @@ app.post(
   userController.getProfile,
   foodController.getFoods,
   foodController.getFacts,
-  foodController.filterAllergy, 
+  foodController.filterAllergy,
   foodController.filterDiet,
   (req, res) => {
-    console.log("you  made it babbeee, this shits filtered!")
+    console.log('you  made it babbeee, this shits filtered!');
     return res.status(200).send(res.locals.facts);
   }
 );
