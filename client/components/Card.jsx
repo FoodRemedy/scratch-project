@@ -2,37 +2,26 @@
 import React, { useState, useEffect } from 'react';
 
 function Card(props) {
-  const { columns, rows, dataProperties } = props;
-  const [foodData, setFoodData] = useState([]);
-  
-  //fetch the data from the database store itinto a state
- const getData = () => {
+  const { name, nutrients } = props;
 
-    fetch(`/api`)
-      .then((res) => res.json())
-      .then((food) => {
-        const foodCard = { name: food.ingredients[0].text };
-        console.log(foodCard)
-// setFoodData()
-      })
-      .catch((err) =>
-        console.log(`Error in retrieving foods from database. ${err}`)
-      );
-  };
-
-  //25 want to use the state to render the food 
-  //line 32 want to use another state to render the nutrition. fackts 
+console.log(nutrients[0])
   return (
     <div className="card">
       <div className="name">
-        <h1> Food:  </h1>
+        <h1> { name }  </h1>
       </div>
-      <ul className="detailsList">
+
         <h2>Nutrition Facts</h2>
-        {columns.slice(1).map((header, property) => (
-          <li key={property}>{header}: NUTRITION FACTS  </li>
-        ))}
-      </ul>
+        {nutrients.map((nutrient, i) => {  
+            if(nutrient === undefined){
+              return <h1></h1>
+            }
+           return <div>
+            <h4>{nutrient.label}</h4>
+            <h4>{nutrient.quantity.toFixed(2)}{nutrient.unit}</h4> 
+            </div>
+          })}
+
     </div>
   );
 }
