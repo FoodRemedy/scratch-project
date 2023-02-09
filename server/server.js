@@ -57,6 +57,7 @@ app.delete('/logout', cookieController.removeSessionCookie, (req, res) => {
 app.post(
   '/search',
   foodController.getFoods,
+  // foodController.filterFoods,
   foodController.getFacts,
   (req, res) => {
     return res.status(200).send(res.locals.facts);

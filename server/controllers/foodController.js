@@ -30,6 +30,44 @@ foodController.getFoods = (req, res, next) => {
   }
 };
 
+foodController.filterFoods = (req, res, next) => {
+
+//  Iterate through response object (array of objects)
+// For each object, filter only ones that include the VALUE of diet and VALUE of allergy
+// (These are good to gos)
+
+// Update res.locals.food with new slimed down array
+// res.locals.badAllergyFood
+// res.locals.badDietFood
+// Res.locals.blacklistFood
+};
+
+
+foodController.getFacts = async (req, res, next) => {
+  console.log('inside of getFacts in food controller');
+  try {
+    const facts = await Promise.all(
+      res.locals.foods.map(async (food) => {
+        const newURL = preciseURL + food;
+        const response = await fetch(newURL);
+        return response.json();
+      }),
+    );
+    res.locals.facts = facts;
+    console.log(facts)
+    console.log('length', res.locals.facts.length);
+    return next();
+  } catch (error) {
+    console.log(error);
+    return next({
+      log: 'Express error handler caught getFacts handler',
+      status: 500,
+      message: error,
+    });
+  }
+};
+
+
 // foodController.getFacts = async (req, res, next) => {
 //   console.log('hitting get facts');
 //   res.locals.facts = [];
@@ -52,29 +90,6 @@ foodController.getFoods = (req, res, next) => {
 //     });
 //   }
 // };
-
-foodController.getFacts = async (req, res, next) => {
-  console.log('inside of getFacts in food controller');
-  try {
-    const facts = await Promise.all(
-      res.locals.foods.map(async (food) => {
-        const newURL = preciseURL + food;
-        const response = await fetch(newURL);
-        return response.json();
-      }),
-    );
-    res.locals.facts = facts;
-    console.log('length', res.locals.facts.length);
-    return next();
-  } catch (error) {
-    console.log(error);
-    return next({
-      log: 'Express error handler caught getFacts handler',
-      status: 500,
-      message: error,
-    });
-  }
-};
 
 module.exports = foodController;
 
